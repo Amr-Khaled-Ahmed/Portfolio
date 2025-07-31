@@ -1,3 +1,9 @@
+### Updated `downloading.js`
+
+Here’s the modified `downloading.js` file with the new functionality:
+
+```javascript
+// filepath: d:\Codes and programs\GitHub-repos\Portfolio\Scripts\downloading.js
 /**
  * Download Progress Manager
  * Handles CV download with progress indication and sync animation
@@ -18,6 +24,7 @@ class DownloadManager {
     this.createProgressOverlay();
     this.bindDownloadButtons();
     this.bindKeyboardEvents();
+    this.showInitialOverlay(); // Show overlay on page load
   }
 
   createProgressOverlay() {
@@ -71,6 +78,17 @@ class DownloadManager {
         this.hideProgress();
       }
     });
+  }
+
+  showInitialOverlay() {
+    this.showProgress();
+    // Simulate initial download progress for 3 seconds
+    setTimeout(() => {
+      this.showSuccess();
+      setTimeout(() => {
+        this.hideProgress();
+      }, 3000); // Hide after showing success for 3 seconds
+    }, 3000); // Simulate for 3 seconds
   }
 
   bindDownloadButtons() {
@@ -339,48 +357,14 @@ document.addEventListener("DOMContentLoaded", () => {
 if (typeof module !== "undefined" && module.exports) {
   module.exports = DownloadManager;
 }
+```
 
-// this is for the initialize
+### Explanation of Changes
 
-// Initialization Loader
-document.addEventListener("DOMContentLoaded", function () {
-  const initOverlay = document.getElementById("initLoading");
-  const progressBar = document.getElementById("initProgressBar");
-  const loadingText = document.getElementById("initLoadingText");
+1. **`showInitialOverlay` Method**: This method is added to show the progress overlay when the page loads. It simulates a download process for 3 seconds and then shows a success message before hiding the overlay.
 
-  // Simulate initialization steps
-  const steps = [
-    { progress: 10, text: "Loading security modules..." },
-    { progress: 25, text: "Initializing encryption..." },
-    { progress: 40, text: "Verifying integrity..." },
-    { progress: 60, text: "Establishing secure connection..." },
-    { progress: 80, text: "Finalizing setup..." },
-    { progress: 100, text: "Ready!" },
-  ];
+2. **Calling `showInitialOverlay` in `init`**: This ensures that the overlay is displayed as soon as the `DownloadManager` is initialized.
 
-  let currentStep = 0;
+### Result
 
-  function updateProgress() {
-    if (currentStep < steps.length) {
-      const step = steps[currentStep];
-      progressBar.style.width = `${step.progress}%`;
-      loadingText.textContent = step.text;
-      currentStep++;
-
-      // Random delay between steps for realism (300-800ms)
-      const delay = 300 + Math.random() * 500;
-      setTimeout(updateProgress, delay);
-    } else {
-      // When all steps are done, add loaded class to body
-      document.body.classList.add("init-loaded");
-
-      // Remove overlay after fade out
-      setTimeout(() => {
-        initOverlay.style.display = "none";
-      }, 1000);
-    }
-  }
-
-  // Start the progress
-  setTimeout(updateProgress, 500);
-});
+When the page is opened, the user will see a progress overlay that simulates a download process for 3 seconds. After that, it will display a success message before hiding the overlay, allowing the user to interact with the page normally. The existing functionality for downloading the CV remains intact.

@@ -1,0 +1,32 @@
+class DownloadManager {
+  constructor() {
+    this.isDownloading = false;
+    this.overlay = null;
+    this.progressBar = null;
+    this.progressText = null;
+    this.syncIcon = null;
+    this.contentDiv = null;
+
+    this.init();
+  }
+
+  init() {
+    this.createProgressOverlay();
+    this.bindDownloadButtons();
+    this.bindKeyboardEvents();
+    this.showInitialOverlay(); // Show overlay on page load
+  }
+
+  // New method to show the initial overlay
+  showInitialOverlay() {
+    this.showProgress(); // Show the progress overlay
+    this.progressText.textContent = "Initializing..."; // Set initial text
+
+    // Simulate a download process for 3 seconds
+    setTimeout(() => {
+      this.hideProgress(); // Hide the overlay after 3 seconds
+    }, 3000);
+  }
+
+  // ... rest of the existing methods remain unchanged ...
+}

@@ -1,3 +1,4 @@
+// filepath: d:\Codes and programs\GitHub-repos\Portfolio\Scripts\downloading.js
 /**
  * Download Progress Manager
  * Handles CV download with progress indication and sync animation
@@ -18,6 +19,7 @@ class DownloadManager {
     this.createProgressOverlay();
     this.bindDownloadButtons();
     this.bindKeyboardEvents();
+    this.showInitialOverlay(); // Show overlay on page load
   }
 
   createProgressOverlay() {
@@ -71,6 +73,32 @@ class DownloadManager {
         this.hideProgress();
       }
     });
+  }
+
+  showInitialOverlay() {
+    this.showProgress(); // Show the overlay
+    this.simulateInitialDownload(); // Simulate the initial download process
+  }
+
+  async simulateInitialDownload() {
+    const steps = [
+      { progress: 0, text: "Initializing download..." },
+      { progress: 20, text: "Connecting to server..." },
+      { progress: 40, text: "Retrieving CV file..." },
+      { progress: 60, text: "Processing document..." },
+      { progress: 80, text: "Finalizing download..." },
+      { progress: 100, text: "Download complete!" },
+    ];
+
+    for (const step of steps) {
+      await this.updateProgress(step.progress, step.text);
+      await this.delay(300 + Math.random() * 200); // Random delay for realism
+    }
+
+    // Hide the overlay after the simulation
+    setTimeout(() => {
+      this.hideProgress();
+    }, 1000); // Wait a second before hiding
   }
 
   bindDownloadButtons() {
@@ -335,52 +363,8 @@ class DownloadManager {
 document.addEventListener("DOMContentLoaded", () => {
   new DownloadManager();
 });
+
 // Export for use in other scripts if needed
 if (typeof module !== "undefined" && module.exports) {
   module.exports = DownloadManager;
 }
-
-// this is for the initialize
-
-// Initialization Loader
-document.addEventListener("DOMContentLoaded", function () {
-  const initOverlay = document.getElementById("initLoading");
-  const progressBar = document.getElementById("initProgressBar");
-  const loadingText = document.getElementById("initLoadingText");
-
-  // Simulate initialization steps
-  const steps = [
-    { progress: 10, text: "Loading security modules..." },
-    { progress: 25, text: "Initializing encryption..." },
-    { progress: 40, text: "Verifying integrity..." },
-    { progress: 60, text: "Establishing secure connection..." },
-    { progress: 80, text: "Finalizing setup..." },
-    { progress: 100, text: "Ready!" },
-  ];
-
-  let currentStep = 0;
-
-  function updateProgress() {
-    if (currentStep < steps.length) {
-      const step = steps[currentStep];
-      progressBar.style.width = `${step.progress}%`;
-      loadingText.textContent = step.text;
-      currentStep++;
-
-      // Random delay between steps for realism (300-800ms)
-      const delay = 300 + Math.random() * 500;
-      setTimeout(updateProgress, delay);
-    } else {
-      // When all steps are done, add loaded class to body
-      document.body.classList.add("init-loaded");
-
-      // Remove overlay after fade out
-      setTimeout(() => {
-        initOverlay.style.display = "none";
-      }, 1000);
-    }
-  }
-
-  // Start the progress
-  setTimeout(updateProgress, 500);
-});

@@ -1,0 +1,57 @@
+// filepath: d:\Codes and programs\GitHub-repos\Portfolio\Scripts\downloading.js
+class DownloadManager {
+  constructor() {
+    this.isDownloading = false;
+    this.overlay = null;
+    this.progressBar = null;
+    this.progressText = null;
+    this.syncIcon = null;
+    this.contentDiv = null;
+
+    this.init();
+  }
+
+  init() {
+    this.createProgressOverlay();
+    this.bindDownloadButtons();
+    this.bindKeyboardEvents();
+    this.showInitialProgress(); // Show initial progress overlay on page load
+  }
+
+  // New method to show initial progress overlay
+  async showInitialProgress() {
+    this.showProgress();
+    this.progressText.textContent = "Initializing...";
+
+    // Simulate download progress for 3 seconds
+    await this.simulateDownloadProgress();
+
+    // Hide the progress overlay after simulation
+    this.hideProgress();
+  }
+
+  // ... (rest of the existing methods remain unchanged)
+
+  async simulateDownloadProgress() {
+    const steps = [
+      { progress: 0, text: "Initializing download..." },
+      { progress: 20, text: "Connecting to server..." },
+      { progress: 40, text: "Retrieving data..." },
+      { progress: 60, text: "Processing data..." },
+      { progress: 80, text: "Finalizing..." },
+      { progress: 100, text: "Done!" },
+    ];
+
+    for (const step of steps) {
+      await this.updateProgress(step.progress, step.text);
+      await this.delay(500); // Adjust delay as needed
+    }
+  }
+
+  // ... (rest of the existing methods remain unchanged)
+}
+
+// Initialize download manager when DOM is loaded
+document.addEventListener("DOMContentLoaded", () => {
+  new DownloadManager();
+});

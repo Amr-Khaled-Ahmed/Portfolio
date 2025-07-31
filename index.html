@@ -46,7 +46,19 @@
       </div>
     </nav>
   </header>
-
+<!-- Initialization Loading Overlay -->
+    <div class="init-loading-overlay" id="initLoading">
+        <div class="init-loading-content">
+            <div class="init-loading-icon">
+                <i class="fas fa-bug"></i>
+            </div>
+            <h2>Initializing Security Protocols</h2>
+            <div class="init-progress-container">
+                <div class="init-progress-bar" id="initProgressBar"></div>
+            </div>
+            <div class="init-loading-text" id="initLoadingText">Loading essential components...</div>
+        </div>
+    </div>
   <!-- Main Content -->
   <main>
     <!-- Home Welcome Section -->
@@ -233,6 +245,6 @@
   <script src="./Scripts/scripts.js" defer></script>
 
   <!-- Download functionality JavaScript -->
-  <script src="./js/downloading.js" defer></script>
+  <script src="./Scripts/downloading.js" defer></script>
 </body>
 </html>

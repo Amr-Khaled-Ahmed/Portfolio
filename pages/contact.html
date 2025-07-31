@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="./../css/contact.css">
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <!-- AOS CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
         <script type="text/javascript">
             emailjs.init("Z4u6SMrODAUc_3s04"); 
@@ -19,7 +21,7 @@
     </head>
     <body>
 
-        <header id="header">
+        <header id="header" data-aos="fade-down" data-aos-duration="800">
             <nav>
               <div class="header-title">Amr Khaled</div>
               <button class="menu-icon" id="menu-icon" aria-label="Toggle Menu">
@@ -43,31 +45,43 @@
             </nav>
           </header>
         <section id="contact">
-          <h2 class="animate__animated animate__fadeInDown">Contact Me</h2>
-          <form id="contact-form" class="animate__animated animate__fadeInUp">
-            <div class="form-group">
+          <h2 class="animate__animated animate__fadeInDown" data-aos="fade-down" data-aos-duration="1000">Contact Me</h2>
+          <form id="contact-form" class="animate__animated animate__fadeInUp" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            <div class="form-group" data-aos="slide-right" data-aos-duration="800" data-aos-delay="400">
               <label for="name">Name:</label>
               <input type="text" id="name" name="name" placeholder="Your Name" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" data-aos="slide-left" data-aos-duration="800" data-aos-delay="500">
               <label for="email">Email:</label>
               <input type="email" id="email" name="email" placeholder="Your Email" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" data-aos="slide-right" data-aos-duration="800" data-aos-delay="600">
               <label for="subject">Subject:</label>
               <input type="text" id="subject" name="subject" placeholder="Subject" required>
             </div>
             
-            <div class="form-group">
+            <div class="form-group" data-aos="slide-left" data-aos-duration="800" data-aos-delay="700">
               <label for="message">Message:</label>
               <textarea id="message" name="message" placeholder="Your Message" required></textarea>
             </div>
             
-            <button type="submit" id="button">Send Message</button>
+            <button type="submit" id="button" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="800">Send Message</button>
           </form>
         </section>
+
+        <!-- AOS JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+        <script>
+          AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false,
+            offset: 50
+          });
+        </script>
         <script src="./../Scripts/contact.js"></script>
         <script src="./../Scripts/scripts.js"></script>
 

@@ -9,10 +9,27 @@
     <link rel="stylesheet" href="../css/certificate.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- AOS CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <!-- Particles.js -->
+    <style>
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: var(--background-color);
+        }
+    </style>
 </head>
 <body class="software-mode">
+    <!-- Background Animation -->
+    <div id="particles-js"></div>
+    
     <!-- Header -->
-    <header id="header">
+    <header id="header" data-aos="fade-down" data-aos-duration="800">
         <nav>
             <div class="header-title">Amr Khaled</div>
             <button class="menu-icon" id="menu-icon" aria-label="Toggle Menu">
@@ -36,22 +53,22 @@
     </header>
 
     <main id="certificate-details">
-        <div class="certificate-container" id="certificate-detail-container">
-            <div class="certificate-image-full">
+        <div class="certificate-container" id="certificate-detail-container" data-aos="zoom-in" data-aos-duration="1000">
+            <div class="certificate-image-full" data-aos="fade-right" data-aos-duration="800">
                 <img id="certificate-img" src="" alt="Certificate Image">
             </div>
-            <div class="certificate-info">
+            <div class="certificate-info" data-aos="fade-left" data-aos-duration="800" data-aos-delay="200">
                 <h2 id="certificate-title"></h2>
                 <p id="certificate-description"></p>
                 <p id="certificate-issuer"></p>
                 <p id="certificate-date"></p>
-                <a href="certifications.html" class="back-button">Back to Certifications</a>
+                <a href="certifications.html" class="back-button" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="400">Back to Certifications</a>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer role="contentinfo">
+    <footer role="contentinfo" data-aos="fade-up" data-aos-duration="800">
         <p>&copy; 2023 Amr Khaled. All rights reserved.</p>
         <div class="contact-icons">
             <a href="https://www.linkedin.com/in/amr-el-dahshan-843a11306/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
@@ -60,7 +77,129 @@
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="../Scripts/scripts.js" type="module"></script>
     <script src="../Scripts/certificate.js"></script>
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+    <!-- Particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#0d6efd"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#0d6efd",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
 </body>
 </html>

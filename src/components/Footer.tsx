@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
     },
     {
       name: 'Email',
-      url: 'mailto:amr171516@gmail.com',
+      url: 'mailto:amrkhaledv2171516@gmail.com',
       icon: 'fas fa-envelope'
     },
 

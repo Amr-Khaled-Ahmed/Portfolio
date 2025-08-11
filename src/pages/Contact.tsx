@@ -53,7 +53,7 @@ const Contact: React.FC = () => {
       icon: 'fab fa-linkedin',
       title: 'LinkedIn',
       value: 'Amr El-Dahshan',
-      link: 'https://www.linkedin.com/in/amr-el-dahshan-843a11306',
+      link: 'https://www.linkedin.com/in/amr-el-dahshan',
       description: 'Connect with me professionally'
     },
     {
@@ -69,31 +69,31 @@ const Contact: React.FC = () => {
     {
       name: 'Hack The Box',
       icon: 'fas fa-cube',
-      username: '@AmrKhaled',
+      username: '@ZeroAccess121',
       description: 'Cybersecurity training platform',
       color: 'text-green-500'
     },
     {
       name: 'TryHackMe',
       icon: 'fas fa-flag',
-      username: '@AmrKhaled123',
+      username: '@ZeroAccess121',
       description: 'Interactive cybersecurity learning',
       color: 'text-red-500'
     },
-    {
-      name: 'BugCrowd',
-      icon: 'fas fa-bug',
-      username: '@amr_security',
-      description: 'Bug bounty platform',
-      color: 'text-orange-500'
-    },
-    {
-      name: 'HackerOne',
-      icon: 'fas fa-shield-alt',
-      username: '@amr_khaled',
-      description: 'Vulnerability disclosure platform',
-      color: 'text-purple-500'
-    }
+    // {
+    //   name: 'BugCrowd',
+    //   icon: 'fas fa-bug',
+    //   username: '@amr_security',
+    //   description: 'Bug bounty platform',
+    //   color: 'text-orange-500'
+    // },
+    // {
+    //   name: 'HackerOne',
+    //   icon: 'fas fa-shield-alt',
+    //   username: '@amr_khaled',
+    //   description: 'Vulnerability disclosure platform',
+    //   color: 'text-purple-500'
+    // }
   ];
 
   const services = [

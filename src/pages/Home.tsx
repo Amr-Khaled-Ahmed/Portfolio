@@ -236,7 +236,7 @@ const Home: React.FC = () => {
             </div>
 
             <a
-              href="/contact"
+              href="./contact"
               className="px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 text-lg"
             >
               <i className="fas fa-envelope"></i>
@@ -244,7 +244,7 @@ const Home: React.FC = () => {
             </a>
 
             <a
-              href="/projects"
+              href="./projects"
               className="px-8 py-4 bg-accent hover:bg-primary text-text-primary hover:text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 text-lg"
             >
               <i className="fas fa-code"></i>

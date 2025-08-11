@@ -188,7 +188,7 @@ const Home: React.FC = () => {
           >
             <span className="text-gradient">Amr Khaled Ahmed</span>
             <span className="block text-3xl md:text-5xl text-primary font-normal mt-4 animate-float">
-              Cybersecurity Expert
+              Cybersecurity
             </span>
           </h1>
 

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer';
+import emailjs from '@emailjs/browser';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,17 @@ const Contact: React.FC = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+  // Initialize EmailJS
+useEffect(() => {
+  const pub = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  if (!pub) {
+    console.error('Missing VITE_EMAILJS_PUBLIC_KEY');
+    return;
+  }
+  emailjs.init(pub);
+}, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -20,14 +32,60 @@ const Contact: React.FC = () => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  setSubmitStatus('idle');
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
+  try {
+    const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // Reset form
+    // Check for missing env vars
+    if (!serviceID || !templateID || !publicKey) {
+      console.error("Missing EmailJS environment variables", {
+        serviceID,
+        templateID,
+        publicKey
+      });
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Get current time for the template
+    const now = new Date();
+    const timeString = now.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+
+    // Get the selected service name
+    const selectedService = services.find(s => s.id === formData.service)?.name || 'General Inquiry';
+
+    const templateParams = {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || 'Not specified',
+      service: selectedService,
+      subject: formData.subject,
+      message: formData.message,
+      time: timeString
+    };
+
+    // Init EmailJS with public key (ensures correct key in production)
+    emailjs.init(publicKey);
+
+    // Send email
+    await emailjs.send(serviceID, templateID, templateParams);
+
+    // Success
+    setSubmitStatus('success');
     setFormData({
       name: '',
       email: '',
@@ -37,9 +95,16 @@ const Contact: React.FC = () => {
       service: 'general'
     });
 
+  } catch (err: any) {
+    console.error('EmailJS Error:', err);
+    if (err?.text) console.error('EmailJS response text:', err.text);
+    setSubmitStatus('error');
+  } finally {
     setIsSubmitting(false);
-    alert('Thank you for your message! I will get back to you soon.');
-  };
+    setTimeout(() => setSubmitStatus('idle'), 3000);
+  }
+};
+
 
   const contactMethods = [
     {
@@ -80,20 +145,6 @@ const Contact: React.FC = () => {
       description: 'Interactive cybersecurity learning',
       color: 'text-red-500'
     },
-    // {
-    //   name: 'BugCrowd',
-    //   icon: 'fas fa-bug',
-    //   username: '@amr_security',
-    //   description: 'Bug bounty platform',
-    //   color: 'text-orange-500'
-    // },
-    // {
-    //   name: 'HackerOne',
-    //   icon: 'fas fa-shield-alt',
-    //   username: '@amr_khaled',
-    //   description: 'Vulnerability disclosure platform',
-    //   color: 'text-purple-500'
-    // }
   ];
 
   const services = [
@@ -329,13 +380,27 @@ const Contact: React.FC = () => {
                 className={`px-8 py-4 rounded-lg font-semibold text-white transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center space-x-3 mx-auto ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
+                    : submitStatus === 'success'
+                      ? 'bg-green-500'
+                      : submitStatus === 'error'
+                        ? 'bg-red-500'
+                        : 'bg-primary hover:bg-primary/90 hover:shadow-xl'
                 }`}
               >
                 {isSubmitting ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                     <span>Sending Message...</span>
+                  </>
+                ) : submitStatus === 'success' ? (
+                  <>
+                    <i className="fas fa-check"></i>
+                    <span>Success!</span>
+                  </>
+                ) : submitStatus === 'error' ? (
+                  <>
+                    <i className="fas fa-exclamation-circle"></i>
+                    <span>Try Again</span>
                   </>
                 ) : (
                   <>
@@ -344,6 +409,16 @@ const Contact: React.FC = () => {
                   </>
                 )}
               </button>
+              {submitStatus === 'success' && (
+                <div className="mt-4 text-green-500 animate-fade-in">
+                  Your message has been sent successfully!
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="mt-4 text-red-500 animate-fade-in">
+                  Failed to send. Please try again.
+                </div>
+              )}
             </div>
           </form>
         </div>

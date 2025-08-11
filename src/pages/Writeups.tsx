@@ -563,3 +563,4 @@ vol.py -f memory.raw windows.malfind</code></pre>
 };
 
 export default Writeups;
+

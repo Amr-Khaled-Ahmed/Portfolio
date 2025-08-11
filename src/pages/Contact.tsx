@@ -45,8 +45,8 @@ const Contact: React.FC = () => {
     {
       icon: 'fas fa-envelope',
       title: 'Email',
-      value: 'amr171516@gmail.com',
-      link: 'mailto:amr171516@gmail.com',
+      value: 'amrkhaledv2171516@gmail.com',
+      link: 'mailto:amrkhaledv2171516@gmail.com',
       description: 'Send me an email for general inquiries'
     },
     {

@@ -14,75 +14,76 @@ interface Certificate {
 const Certificates: React.FC = () => {
   const certificates: Certificate[] = [
     {
-      id: 17,
+      id: 1,
       title: "Cyber Security for Beginners",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Introduction to Cybersecurity covering basic concepts, tools, Courses, Fields, and resources for beginners.",
-      imageUrl: "./src/images/Cyber sec for beginners.png",
+    imageUrl: "/certificates/Cyber sec for beginners.png",
+
       skills: ["Cybersecurity Fundamentals", "Security Tools", "Beginner Concepts"]
     },
     {
-      id: 16,
+      id: 2,
       title: "Cloud and Virtualization Concepts",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Network Virtualization concepts certification covering the fundamentals of virtual networks and their applications.",
-      imageUrl: "./src/images/Certificate- cloud .png",
+      imageUrl: "/certificates/Certificate- cloud .png",
       skills: ["Cloud Computing", "Virtualization", "Network Concepts"]
     },
     {
-      id: 15,
+      id: 3,
       title: "Red Hat System Administration 1",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Red Hat System Administration 1 certification focusing on essential Linux administration skills and system management.",
-      imageUrl: "./src/images/Red hat system admin 1.png",
+      imageUrl: "/certificates/Red hat system admin 1.png",
       skills: ["Linux Administration", "System Management", "Red Hat"]
     },
     {
-      id: 14,
+      id: 4,
       title: "Network Virtualization Concepts",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Network Virtualization concepts certification covering the fundamentals of virtual networks and their applications.",
-      imageUrl: "./src/images/Certificate network vm.png",
+      imageUrl: "/certificates/Certificate network vm.png",
       skills: ["Network Virtualization", "Virtual Networks", "VM Concepts"]
     },
     {
-      id: 13,
+      id: 5,
       title: "JavaScript Programming Language",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Comprehensive course on core JavaScript concepts including data types, functions, OOP, DOM manipulation, JSON, AJAX, and event handling.",
-      imageUrl: "./src/images/js.png",
+      imageUrl: "/certificates/js.png",
       skills: ["JavaScript", "DOM Manipulation", "AJAX", "OOP"]
     },
     {
-      id: 12,
+      id: 6,
       title: "start CyberSecurity learning",
       issuer: "Udemy",
       date: "Issued: 2023",
       description: "Introduction to Cybersecurity covering basic concepts, tools, Courses, Fields, and resources for beginners.",
-      imageUrl: "./src/images/guide.jpg",
+      imageUrl: "/certificates/guide.jpg",
       skills: ["Cybersecurity Basics", "Learning Path", "Beginner Guide"]
     },
     {
-      id: 11,
+      id: 7,
       title: "Database Fundamentals",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Introduction to database systems covering SQL, database design, and management principles.",
-      imageUrl: "./src/images/db_intro.png",
+      imageUrl: "/certificates/db_intro.png",
       skills: ["SQL", "Database Design", "DB Management"]
     },
     {
-      id: 10,
+      id: 8,
       title: "Python Programming",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Advanced Python programming including web development, automation.",
-      imageUrl: "./src/images/python.png",
+      imageUrl: "/certificates/python.png",
       skills: ["Python", "Web Development", "Automation"]
     },
     {
@@ -91,61 +92,61 @@ const Certificates: React.FC = () => {
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Network security principles including firewalls, VPNs, intrusion detection, and prevention systems.",
-      imageUrl: "./src/images/network2.png",
+      imageUrl: "/certificates/network2.png",
       skills: ["Network Security", "Firewalls", "VPN", "Intrusion Detection"]
     },
     {
-      id: 8,
+      id: 10,
       title: "Network Fundamentals",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Computer networking fundamentals including TCP/IP, routing, switching, and network protocols.",
-      imageUrl: "./src/images/network1.png",
+      imageUrl: "/certificates/network1.png",
       skills: ["Networking", "TCP/IP", "Routing", "Switching"]
     },
     {
-      id: 7,
+      id: 11,
       title: "Certified Ethical Hacker",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Ethical hacking certification covering penetration testing methodologies and security assessment techniques.",
-      imageUrl: "./src/images/CHE.png",
+      imageUrl: "/certificates/CHE.png",
       skills: ["Ethical Hacking", "Penetration Testing", "Security Assessment"]
     },
     {
-      id: 5,
+      id: 11,
       title: "Web Development",
       issuer: "IEEE",
       date: "Issued: 2023",
       description: "Modern web development certification covering HTML5, CSS3, JavaScript, and responsive design principles.",
-      imageUrl: "./src/images/CC6.png",
+      imageUrl: "/certificates/CC6.png",
       skills: ["HTML5", "CSS3", "JavaScript", "Responsive Design"]
     },
     {
-      id: 3,
+      id: 12,
       title: "OSINT",
       issuer: "Udemy",
       date: "Issued: October 2023",
       description: "Open Source Intelligence certification focusing on information gathering techniques from public sources for security analysis.",
-      imageUrl: "./src/images/osint.jpg",
+      imageUrl: "/certificates/osint.jpg",
       skills: ["OSINT", "Information Gathering", "Security Analysis"]
     },
     {
-      id: 2,
+      id: 13,
       title: "Linux Administration",
       issuer: "Udemy",
       date: "Issued: October 2023",
       description: "Comprehensive Linux administration certification covering system management, shell scripting, and server configuration.",
-      imageUrl: "./src/images/linux.jpg",
+      imageUrl: "/certificates/linux.jpg",
       skills: ["Linux", "System Administration", "Shell Scripting"]
     },
     {
-      id: 1,
+      id: 14,
       title: "CMD",
       issuer: "Udemy",
       date: "Issued: October 2023",
       description: "Windows Command Line Certification covering all essential commands and scripting techniques for effective system administration and automation.",
-      imageUrl: "./src/images/UC-eb7d17b4-9788-4b0e-ae0a-98d9621d634c.jpg",
+      imageUrl: "/certificates/UC-eb7d17b4-9788-4b0e-ae0a-98d9621d634c.jpg",
       skills: ["Command Line", "Windows CMD", "System Administration"]
     }
   ];
@@ -240,13 +241,13 @@ const Certificates: React.FC = () => {
 
                 {/* View More Button */}
                 <div className="pt-4 border-t border-border">
-                  <a
+                  {/*<a
                     href={`/certificate.html?id=${cert.id}`}
                     className="text-primary hover:text-accent transition-colors flex items-center space-x-1"
                   >
                     <span>View Certificate</span>
                     <i className="fas fa-external-link-alt"></i>
-                  </a>
+                  </a>*/}
                 </div>
               </div>
             ))}
@@ -300,7 +301,6 @@ const Certificates: React.FC = () => {
         </div>
       </section>
 
-      <Footer />
     </div>
   );
 };

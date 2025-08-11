@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
           <div className="footer-section">
             <h3>Amr Khaled Ahmed</h3>
             <p className="mb-4">
-              Cybersecurity Expert specializing in penetration testing, vulnerability assessment,
+              Cybersecurity specializing in penetration testing, vulnerability assessment,
               and advanced security consulting. Protecting digital assets through comprehensive security solutions.
             </p>
             <div className="flex space-x-4">
@@ -117,7 +117,7 @@ const Footer: React.FC = () => {
         <div className="footer-bottom">
           <p>
             © {currentYear} Amr Khaled Ahmed. All rights reserved. |
-            <span className="text-primary"> Cybersecurity Expert</span>
+            <span className="text-primary"> Cybersecurity</span>
           </p>
         </div>
       </div>

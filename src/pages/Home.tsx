@@ -259,11 +259,11 @@ const Home: React.FC = () => {
             className="flex flex-wrap justify-center gap-8 text-text-secondary"
           >
 
-            <a href="mailto:amr171516@gmail.com" className="flex items-center space-x-3 hover:text-primary transition-colors group">
+            <a href="mailto:amrkhaledv2171516@gmail.com" className="flex items-center space-x-3 hover:text-primary transition-colors group">
               <div className="w-12 h-12 bg-accent group-hover:bg-primary rounded-lg flex items-center justify-center transition-all">
                 <i className="fas fa-envelope group-hover:text-white"></i>
               </div>
-              <span className="font-medium">amr171516@gmail.com</span>
+              <span className="font-medium">amrkhaledv2171516@gmail.com</span>
             </a>
             <a href="https://www.linkedin.com/in/amr-el-dahshan-843a11306" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-3 hover:text-primary transition-colors group">
               <div className="w-12 h-12 bg-accent group-hover:bg-primary rounded-lg flex items-center justify-center transition-all">

@@ -68,35 +68,43 @@ const Home: React.FC = () => {
     }, 150);
   };
 
+
   const completeDownload = async () => {
     try {
-      // Update this path to your actual CV path
-      const response = await fetch('./documents/CV.pdf');
-      if (!response.ok) throw new Error('Failed to fetch CV');
+      const fileName = "CV.pdf"; // EXACT name from public/cv folder
+      const filePath = `/cv/${fileName}`; // Path relative to the site root
+
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${filePath} (status: ${response.status})`);
+      }
+
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.download = './documents/CV.pdf';
+      link.download = fileName;
       document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      addTerminalLine("[✓] Download complete!");
+      addTerminalLine("[✓] File integrity verified");
 
       setTimeout(() => {
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-        addTerminalLine("[✓] Download complete!");
-        addTerminalLine("[✓] File integrity verified");
-        setTimeout(() => {
-          setIsDownloading(false);
-          setShowTerminal(false);
-        }, 1500);
-      }, 100);
-    } catch (error) {
+        setIsDownloading(false);
+        setShowTerminal(false);
+      }, 1500);
+    } catch (error: any) {
+      console.error(error);
       addTerminalLine("[!] ERROR: Download failed!");
-      addTerminalLine("[*] Initiating cleanup...");
+      addTerminalLine(`[*] ${error.message}`);
       setIsDownloading(false);
     }
   };
+
+
   const services = [
     {
       title: "Penetration Testing",
@@ -236,7 +244,7 @@ const Home: React.FC = () => {
             </div>
 
             <a
-              href="./contact"
+              href="/contact"
               className="px-8 py-4 bg-transparent border-2 border-primary text-primary rounded-xl font-semibold hover:bg-primary hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 text-lg"
             >
               <i className="fas fa-envelope"></i>
@@ -244,7 +252,7 @@ const Home: React.FC = () => {
             </a>
 
             <a
-              href="./projects"
+              href="/projects"
               className="px-8 py-4 bg-accent hover:bg-primary text-text-primary hover:text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 flex items-center space-x-3 text-lg"
             >
               <i className="fas fa-code"></i>

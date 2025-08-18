@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Timeline from '../components/Timeline';
+import InteractiveTimeline from '../components/InteractiveTimeline';
+import SkillsVisualization from '../components/SkillsVisualization';
+import ProjectShowcase from '../components/ProjectShowcase';
 import LoadingProgress from '../components/LoadingProgress';
 import Footer from '../components/Footer';
 
@@ -490,88 +492,39 @@ const Home: React.FC = () => {
       <section className="py-20 px-4 bg-accent/5">
         <div className="max-w-7xl mx-auto">
           <div data-aos="fade-up" className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">Technical Skills</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">Skills & Expertise</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Comprehensive expertise across multiple domains of cybersecurity and software development
+              Interactive visualization of my technical skills and proficiency levels
             </p>
           </div>
 
-          <div className="skills-grid">
-            <div data-aos="fade-up" data-aos-delay="100" className="skills-category">
-              <h3>
-                <i className="fas fa-code text-primary"></i>
-                Programming Languages & Scripting
-              </h3>
-              <div className="skills-list">
-                {['C++', 'C', 'Python', 'Bash Script', 'PowerShell', 'Batch files', 'SQL', 'PHP', 'Java', 'JavaScript', 'HTML', 'CSS', 'Assembly'].map((skill, index) => (
-                  <span key={index} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-
-            <div data-aos="fade-up" data-aos-delay="200" className="skills-category">
-              <h3>
-                <i className="fas fa-globe text-primary"></i>
-                Web Development
-              </h3>
-              <div className="skills-list">
-                {['Django', 'Bootstrap', 'Python', 'Microsoft SQL', 'SQLite', 'React', 'TailWind CSS','HTML','JavaScript'].map((skill, index) => (
-                  <span key={index} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-
-            <div data-aos="fade-up" data-aos-delay="300" className="skills-category">
-              <h3>
-                <i className="fas fa-shield-alt text-primary"></i>
-                Cybersecurity Tools
-              </h3>
-              <div className="skills-list">
-                {['Burp Suite', 'Metasploit', 'Nmap', 'Wireshark', 'OWASP ZAP', 'Nessus', 'SQLmap', 'Ghidra', 'IDA Pro','DIE','x46dbg','gdb','other tools ...'].map((skill, index) => (
-                  <span key={index} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-
-            </div>
-
-            {/* <div data-aos="fade-up" data-aos-delay="400" className="skills-category">
-              <h3>
-                <i className="fas fa-search-plus text-primary"></i>
-                Digital Forensics
-              </h3>
-              <div className="skills-list">
-                {['Volatility', 'Autopsy', 'FTK', 'Memory Analysis', 'Timeline Analysis', 'Evidence Collection'].map((skill, index) => (
-                  <span key={index} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div> */}
-          </div>
+          <SkillsVisualization />
         </div>
       </section>
 
-      {/* Services Timeline */}
+      {/* Featured Projects */}
       <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div data-aos="fade-up" className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">Services</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">Featured Projects</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Comprehensive cybersecurity services designed to protect your digital assets and infrastructure
+              Showcase of my most significant cybersecurity and development projects
             </p>
           </div>
-          <Timeline items={services} type="services" />
+          <ProjectShowcase />
         </div>
       </section>
 
-      {/* Technical Skills Timeline */}
+      {/* Journey Timeline */}
       <section className="py-20 px-4 bg-accent/5">
         <div className="max-w-6xl mx-auto">
           <div data-aos="fade-up" className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">Expertise Areas</h2>
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-8">My Journey</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Advanced expertise across multiple cybersecurity domains and technologies
+              Interactive timeline of my educational and professional milestones
             </p>
           </div>
-          <Timeline items={skills} type="skills" />
+          <InteractiveTimeline />
         </div>
       </section>
 

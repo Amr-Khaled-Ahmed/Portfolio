@@ -9,7 +9,7 @@ import Writeups from './pages/Writeups';
 import ReportedBugs from './pages/ReportedBugs';
 import Contact from './pages/Contact';
 import { ThemeProvider } from './context/ThemeContext';
-import ParticleBackground from './components/ParticleBackground';
+import AnimatedBackground from './components/AnimatedBackground';
 
 function App() {
   useEffect(() => {
@@ -25,7 +25,7 @@ function App() {
     <ThemeProvider>
       <Router>
         <div className="min-h-screen relative overflow-x-hidden">
-          <ParticleBackground />
+          <AnimatedBackground />
           <Header />
           <main className="relative z-10">
             <Routes>

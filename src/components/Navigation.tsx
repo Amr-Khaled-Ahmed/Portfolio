@@ -35,9 +35,9 @@ export default function Navigation({ currentPage = 'home', onNavigate }: Navigat
             </div>
             <div>
               <h1 className="text-2xl font-bold text-[#D4AF37] tracking-wider">
-                PHARAOH
+                Amr Eldhshan
               </h1>
-              <p className="text-xs text-gray-400 font-mono">Offensive Security</p>
+              <p className="text-xs text-gray-400 font-mono">Malware Analyst</p>
             </div>
           </div>
 

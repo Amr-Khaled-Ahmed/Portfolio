@@ -17,43 +17,59 @@ export default function Certifications() {
 
   const certificates: Certificate[] = [
     {
-      id: 21,
-      title: "GDSC Front-End Development Track",
-      issuer: "Google Developer Groups - Damanhour University",
-      date: "Issued: 2024-2025",
-      description: "Completed 60 hours of intensive Front-End Development training, building real-world projects using modern technologies and APIs. Gained comprehensive knowledge in modern web development stack.",
-      imageUrl: "/certificates/University.jpg",
-      skills: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Vite", "MongoDB", "Cloudinary", "Postman", "REST APIs", "Frontend Development"]
-    },
-    {
       id: 20,
+      title: "Fortinet Cybersecurity Engineer",
+      issuer: "Digital Egypt Pioneers Initiative (MCIT Egypt)",
+      date: "Issued: December 2025",
+      description: "Completed the Digital Egypt Pioneers (DEPI) program with a focus on Infrastructure and Security as a Fortinet Cybersecurity Engineer. The training covered CCNA (200-301) networking fundamentals alongside hands-on experience with FortiGate and FortiManager (v7.6). The program emphasized planning, implementing, managing, monitoring, and upgrading enterprise security solutions using Fortinet technologies, including firewalls, intrusion detection systems, VPNs, and threat protection. It also involved vulnerability assessment, incident response, security policy development, system hardening, and collaboration on security projects within enterprise environments.",
+      imageUrl: "/certificates/DEPI.png",
+      skills: [
+        "CCNA 200-301",
+        "Network Fundamentals",
+        "FortiGate 7.6",
+        "FortiManager 7.6",
+        "Firewall Configuration",
+        "Intrusion Detection & Prevention",
+        "VPN Technologies",
+        "Threat & Malware Protection",
+        "Vulnerability Assessment",
+        "Risk Analysis",
+        "Security Policies & Standards",
+        "Incident Response",
+        "Infrastructure Security",
+        "Enterprise Network Security"
+      ]
+},
+
+    {
+      id: 19,
       title: "CCNA: Enterprise Networking, Security, and Automation",
       issuer: "Cisco Networking Academy",
       date: "Issued: October 2025",
       description: "Explored advanced enterprise design, scalability, and programmable networks. This certification marks the completion of the full CCNA (200-301) learning path.",
-      imageUrl: "/certificates/Screenshot 2025-05-01 160302.png",
+      imageUrl: "/certificates/security_automation.png",
       skills: ["OSPF & EIGRP", "WAN & VPN", "NAT", "QoS", "Threat Mitigation", "Network Automation", "SDN"]
     },
     {
-      id: 19,
+      id: 18,
       title: "CCNA: Switching, Routing, and Wireless Essentials",
       issuer: "Cisco Networking Academy",
       date: "Issued: September 2025",
       description: "Deepened understanding of network operations and interconnectivity for small to medium-sized networks.",
-      imageUrl: "/certificates/Screenshot 2025-05-01 160302.png",
+      imageUrl: "/certificates/switching_routing_wirelessEssentials.png",
       skills: ["VLANs & Trunking", "Spanning Tree Protocol", "Dynamic Routing", "Wireless LAN", "ACLs", "Network Security"]
     },
     {
-      id: 18,
+      id: 17,
       title: "CCNA: Introduction to Networks",
       issuer: "Cisco Networking Academy",
       date: "Issued: August 2025",
       description: "Focused on understanding networking fundamentals, device configurations, and IP addressing.",
-      imageUrl: "/certificates/Screenshot 2025-05-01 160302.png",
+      imageUrl: "/certificates/introduction_to_networks.png",
       skills: ["Network Fundamentals", "Ethernet & Switching", "IPv4/IPv6", "Subnetting", "Router Configuration", "Troubleshooting"]
     },
     {
-      id: 17,
+      id: 16,
       title: "Cyber Security for Beginners",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -62,7 +78,7 @@ export default function Certifications() {
       skills: ["Cybersecurity Fundamentals", "Security Tools", "Beginner Concepts"]
     },
     {
-      id: 16,
+      id: 15,
       title: "Cloud and Virtualization Concepts",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -71,7 +87,7 @@ export default function Certifications() {
       skills: ["Cloud Computing", "Virtualization", "Network Concepts"]
     },
     {
-      id: 15,
+      id: 14,
       title: "Red Hat System Administration 1",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -80,7 +96,7 @@ export default function Certifications() {
       skills: ["Linux Administration", "System Management", "Red Hat"]
     },
     {
-      id: 14,
+      id: 13,
       title: "Network Virtualization Concepts",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -89,7 +105,16 @@ export default function Certifications() {
       skills: ["Network Virtualization", "Virtual Networks", "VM Concepts"]
     },
     {
-      id: 13,
+      id: 12,
+      title: "GDSC Front-End Development Track",
+      issuer: "Google Developer Groups - Damanhour University",
+      date: "Issued: 2024-2025",
+      description: "Completed 60 hours of intensive Front-End Development training, building real-world projects using modern technologies and APIs. Gained comprehensive knowledge in modern web development stack.",
+      imageUrl: "/certificates/gdg_fronend.png",
+      skills: ["React", "TypeScript", "JavaScript", "HTML5", "CSS3", "Vite", "MongoDB", "Cloudinary", "Postman", "REST APIs", "Frontend Development"]
+    },
+    {
+      id: 11,
       title: "JavaScript Programming Language",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -98,16 +123,7 @@ export default function Certifications() {
       skills: ["JavaScript", "DOM Manipulation", "AJAX", "OOP"]
     },
     {
-      id: 12,
-      title: "start CyberSecurity learning",
-      issuer: "Udemy",
-      date: "Issued: 2023",
-      description: "Introduction to Cybersecurity covering basic concepts, tools, Courses, Fields, and resources for beginners.",
-      imageUrl: "/certificates/guide.jpg",
-      skills: ["Cybersecurity Basics", "Learning Path", "Beginner Guide"]
-    },
-    {
-      id: 11,
+      id: 10,
       title: "Database Fundamentals",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -116,7 +132,7 @@ export default function Certifications() {
       skills: ["SQL", "Database Design", "DB Management"]
     },
     {
-      id: 10,
+      id: 9,
       title: "Python Programming",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -125,7 +141,7 @@ export default function Certifications() {
       skills: ["Python", "Web Development", "Automation"]
     },
     {
-      id: 9,
+      id: 8,
       title: "Network Security",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -134,7 +150,7 @@ export default function Certifications() {
       skills: ["Network Security", "Firewalls", "VPN", "Intrusion Detection"]
     },
     {
-      id: 8,
+      id: 7,
       title: "Network Fundamentals",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
@@ -143,21 +159,12 @@ export default function Certifications() {
       skills: ["Networking", "TCP/IP", "Routing", "Switching"]
     },
     {
-      id: 7,
-      title: "Certified Ethical Hacker",
-      issuer: "Mahara Tech",
-      date: "Issued: 2025",
-      description: "Ethical hacking certification covering penetration testing methodologies and security assessment techniques.",
-      imageUrl: "/certificates/CHE.png",
-      skills: ["Ethical Hacking", "Penetration Testing", "Security Assessment"]
-    },
-    {
       id: 6,
       title: "Ethical Hacking",
       issuer: "Mahara Tech",
       date: "Issued: 2025",
       description: "Advanced ethical hacking course covering penetration testing and vulnerability assessment.",
-      imageUrl: "/certificates/Ethical_Hacking (1).png",
+      imageUrl: "/certificates/CHE.png",
       skills: ["Ethical Hacking", "Penetration Testing", "Vulnerability Assessment"]
     },
     {
@@ -171,15 +178,6 @@ export default function Certifications() {
     },
     {
       id: 4,
-      title: "Laravel Framework",
-      issuer: "Mahara Tech",
-      date: "Issued: 2025",
-      description: "PHP Laravel framework certification covering MVC architecture, routing, and database management.",
-      imageUrl: "/certificates/maravel.png",
-      skills: ["Laravel", "PHP", "MVC", "Database Management"]
-    },
-    {
-      id: 3,
       title: "OSINT",
       issuer: "Udemy",
       date: "Issued: October 2023",
@@ -188,7 +186,7 @@ export default function Certifications() {
       skills: ["OSINT", "Information Gathering", "Security Analysis"]
     },
     {
-      id: 2,
+      id: 3,
       title: "Linux Administration",
       issuer: "Udemy",
       date: "Issued: October 2023",
@@ -197,14 +195,23 @@ export default function Certifications() {
       skills: ["Linux", "System Administration", "Shell Scripting"]
     },
     {
-      id: 1,
+      id: 2,
       title: "CMD",
       issuer: "Udemy",
       date: "Issued: October 2023",
       description: "Windows Command Line Certification covering all essential commands and scripting techniques for effective system administration and automation.",
       imageUrl: "/certificates/UC-eb7d17b4-9788-4b0e-ae0a-98d9621d634c.jpg",
       skills: ["Command Line", "Windows CMD", "System Administration"]
-    }
+    },
+    {
+      id: 1,
+      title: "start CyberSecurity learning",
+      issuer: "Udemy",
+      date: "Issued: 2023",
+      description: "Introduction to Cybersecurity covering basic concepts, tools, Courses, Fields, and resources for beginners.",
+      imageUrl: "/certificates/guide.jpg",
+      skills: ["Cybersecurity Basics", "Learning Path", "Beginner Guide"]
+    },
   ];
 
   const issuers = ['all', ...Array.from(new Set(certificates.map(cert => cert.issuer)))];

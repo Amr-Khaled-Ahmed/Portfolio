@@ -7,18 +7,19 @@ type CategoryFilter = 'all' | 'malware' | 'ctf' | 'bug-bounty' | 'research' | 'n
 
 // Static writeups data
 const staticWriteups: Writeup[] = [
-  {
-    id: '1',
-    title: "PrivExec Privilege Escalation Write-up",
-    description: "Detailed analysis and exploitation of PrivExec for privilege escalation techniques.",
-    longDescription: "A comprehensive write-up covering the exploitation of PrivExec for privilege escalation, including technical details, exploitation methods, and mitigation strategies.",
-    category: "privilege-escalation",
-    content_url: "https://medium.com/@amrkhaledv2171516/privexec-privilege-escalation-write-up-cba868c1a34c",
-    tags: ["Privilege Escalation", "Windows Security", "Exploitation", "Red Teaming"],
-    published_date: "2024-12-15",
-    featured: true,
-    created_at: "2024-12-15T00:00:00Z"
-  },
+    {
+    id: '3', // Make sure this is unique
+    title: "ZICHMP CTF 2026 - Cyber Champions 2026 Write-up",
+    description: "Step-by-step write-up of the ZICHMP CTF 2026 challenges, including solutions, techniques, and lessons learned.",
+    longDescription: "This detailed write-up covers the ZICHMP CTF 2026 challenges from Cyber Champions 2026, with complete explanations of each solution, the techniques used, and insights for future competitions.",
+    category: "ctf", // fits into your existing CTF category
+    content_url: "https://medium.com/@amrkhaledv2171516/zichmp-ctf-2026-cyber-champions-2026-abbfe3f13fc6",
+    tags: ["CTF", "Cyber Champions 2026", "Reverse Engineering", "Exploitation", "Network Security"],
+    published_date: "2026-02-08", // use the actual date you want
+    featured: true, // set true if you want it to appear in featured section
+    created_at: "2026-02-08T00:00:00Z"
+},
+
   {
     id: '2',
     title: "Comprehensive Analysis of BadRabbit Ransomware",
@@ -31,6 +32,21 @@ const staticWriteups: Writeup[] = [
     featured: true,
     created_at: "2025-02-27T00:00:00Z"
   },
+    {
+    id: '1',
+    title: "PrivExec Privilege Escalation Write-up",
+    description: "Detailed analysis and exploitation of PrivExec for privilege escalation techniques.",
+    longDescription: "A comprehensive write-up covering the exploitation of PrivExec for privilege escalation, including technical details, exploitation methods, and mitigation strategies.",
+    category: "privilege-escalation",
+    content_url: "https://medium.com/@amrkhaledv2171516/privexec-privilege-escalation-write-up-cba868c1a34c",
+    tags: ["Privilege Escalation", "Windows Security", "Exploitation", "Red Teaming"],
+    published_date: "2024-12-15",
+    featured: true,
+    created_at: "2024-12-15T00:00:00Z"
+  },
+
+
+
 
 ];
 

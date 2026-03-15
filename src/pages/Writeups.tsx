@@ -8,7 +8,19 @@ type CategoryFilter = 'all' | 'malware' | 'ctf' | 'bug-bounty' | 'research' | 'n
 // Static writeups data
 const staticWriteups: Writeup[] = [
     {
-    id: '3', // Make sure this is unique
+    id: '4',
+    title: "CyCTF Luxor",
+    description: "Step-by-step write-up of the CyCTF Luxor CTF 2026 Reverse challenges and one mobile challenge, including solutions, and techniques.",
+    // longDescription: "[Longer description of the writeup]",
+    category: "ctf", // or appropriate category
+    content_url: "https://medium.com/p/2a33d347e0f5?postPublishedType=initial",
+    tags: ["Tag1", "Tag2", "Tag3"],
+    published_date: "2026-03-16",
+    featured: false,
+    created_at: "2026-03-16T00:00:00Z"
+  },
+    {
+    id: '3',
     title: "ZICHMP CTF 2026 - Cyber Champions 2026 Write-up",
     description: "Step-by-step write-up of the ZICHMP CTF 2026 challenges, including solutions, techniques, and lessons learned.",
     longDescription: "This detailed write-up covers the ZICHMP CTF 2026 challenges from Cyber Champions 2026, with complete explanations of each solution, the techniques used, and insights for future competitions.",

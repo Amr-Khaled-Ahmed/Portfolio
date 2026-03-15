@@ -22,7 +22,7 @@ export default function Certifications() {
       issuer: "Digital Egypt Pioneers Initiative (MCIT Egypt)",
       date: "Issued: December 2025",
       description: "Completed the Digital Egypt Pioneers (DEPI) program with a focus on Infrastructure and Security as a Fortinet Cybersecurity Engineer. The training covered CCNA (200-301) networking fundamentals alongside hands-on experience with FortiGate and FortiManager (v7.6). The program emphasized planning, implementing, managing, monitoring, and upgrading enterprise security solutions using Fortinet technologies, including firewalls, intrusion detection systems, VPNs, and threat protection. It also involved vulnerability assessment, incident response, security policy development, system hardening, and collaboration on security projects within enterprise environments.",
-      imageUrl: "/certificates/DEPI.png",
+      imageUrl: "/certificates/NTI_DEPI_R3.png",
       skills: [
         "CCNA 200-301",
         "Network Fundamentals",

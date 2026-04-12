@@ -7,6 +7,18 @@ type CategoryFilter = 'all' | 'malware' | 'ctf' | 'bug-bounty' | 'research' | 'n
 
 // Static writeups data
 const staticWriteups: Writeup[] = [
+
+    {
+      id: '5',
+      title: "BRK CYS CTF 2026 Write-up",
+      description: "Reverse Engineering and Crypto writeups from BRK CYS CTF 2026...",
+      longDescription: "Step-by-step solutions for four challenges: not_so_simple.c, Dark Matter, Keygen, and Pixel Perfect.",
+      category: "ctf",
+      content_url: "https://medium.com/@amrkhaledv2171516/brk-cys-ctf-2026-bb8e0e8faada",
+      tags: ["CTF", "Reverse Engineering", "XOR", "Anti-Debug", "Crypto", "BRK CYS CTF 2026"],
+      published_date: "2026-04-12",
+      featured: true,
+    },
     {
     id: '4',
     title: "CyCTF Luxor",

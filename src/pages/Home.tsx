@@ -644,107 +644,109 @@ export default function Home({ onNavigate }: HomeProps) {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-3 sm:px-4">
         {/* 3D Background Animation */}
         <PharaohAnimationBg />
         
         {/* Content Overlay */}
-        <div className="relative z-10 max-w-6xl mx-auto text-center">
-          <div className="mb-8">
-            <h1 className="text-7xl md:text-9xl font-bold text-yellow-600 tracking-wider mb-4">
+        <div className="relative z-10 max-w-6xl mx-auto text-center w-full">
+          <div className="mb-4 sm:mb-8">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-yellow-600 tracking-wider mb-2 sm:mb-4 break-words">
               Amr Eldhshan
-
             </h1>
           </div>
 
-          <div className="space-y-4 mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold text-white tracking-wide">
+          <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12 px-2 sm:px-0">
+            <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-wide break-words">
                Security Specialist
             </h2>
-            <p className="text-xl md:text-2xl text-cyan-600 font-mono">
+            <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-cyan-600 font-mono break-words">
               Egyptian Cyber Warrior | Network Security | Malware Analysis
             </p>
-            <div className="flex flex-wrap justify-center gap-4 text-gray-400 text-lg">
-              <div className="flex items-center gap-2">
-                <Terminal className="text-yellow-600" size={20} />
-                <span>Linux Enthusiast</span>
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg">
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Terminal className="text-yellow-600 flex-shrink-0" size={16} />
+                <span className="hidden sm:inline">Linux Enthusiast</span>
+                <span className="sm:hidden">Linux</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Gamepad2 className="text-yellow-600" size={20} />
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Gamepad2 className="text-yellow-600 flex-shrink-0" size={16} />
                 <span>Gamer</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Shield className="text-yellow-600" size={20} />
-                <span>CTF Creator</span>
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Shield className="text-yellow-600 flex-shrink-0" size={16} />
+                <span className="hidden sm:inline">CTF Creator</span>
+                <span className="sm:hidden">CTF</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Bug className="text-yellow-600" size={20} />
-                <span>Malware Analyst</span>
+              <div className="flex items-center gap-1 sm:gap-2">
+                <Bug className="text-yellow-600 flex-shrink-0" size={16} />
+                <span className="hidden sm:inline">Malware Analyst</span>
+                <span className="sm:hidden">Malware</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-6">
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-3 text-center">
-              <div className="text-sm text-gray-400 mb-1">Session Time</div>
-              <div className="text-xl text-yellow-600 font-mono">{sessionTime}</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8 px-2 sm:px-0">
+            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+              <div className="text-xs text-gray-400 mb-1">Session Time</div>
+              <div className="text-sm sm:text-xl text-yellow-600 font-mono">{sessionTime}</div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-3 text-center">
-              <div className="text-sm text-gray-400 mb-1">Commands</div>
-              <div className="text-xl text-yellow-600 font-mono">20+</div>
+            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+              <div className="text-xs text-gray-400 mb-1">Commands</div>
+              <div className="text-sm sm:text-xl text-yellow-600 font-mono">20+</div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-3 text-center">
-              <div className="text-sm text-gray-400 mb-1">Files</div>
-              <div className="text-xl text-yellow-600 font-mono">5</div>
+            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+              <div className="text-xs text-gray-400 mb-1">Files</div>
+              <div className="text-sm sm:text-xl text-yellow-600 font-mono">5</div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-3 text-center">
-              <div className="text-sm text-gray-400 mb-1">CTF Status</div>
-              <div className="text-xl text-yellow-600 font-mono">ACTIVE</div>
+            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+              <div className="text-xs sm:text-sm text-gray-400 mb-1">CTF Status</div>
+              <div className="text-sm sm:text-xl text-yellow-600 font-mono">ACTIVE</div>
             </div>
           </div>
 
-          <div className="mb-16 max-w-4xl mx-auto">
-            <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-yellow-600 mb-2 flex items-center justify-center gap-2">
-                <Terminal className="text-yellow-600" />
-                ZeroAccess Terminal v2.3.1
-                <Terminal className="text-yellow-600" />
+          <div className="mb-8 sm:mb-16 max-w-4xl mx-auto px-2 sm:px-4">
+            <div className="text-center mb-4 sm:mb-6">
+              <h3 className="text-lg sm:text-2xl font-bold text-yellow-600 mb-2 flex items-center justify-center gap-2 flex-wrap">
+                <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
+                <span>ZeroAccess Terminal v2.3.1</span>
+                <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
               </h3>
-              <p className="text-gray-400 mb-4">
+              <p className="text-xs sm:text-sm text-gray-400 mb-4 px-2">
                 Your gateway to the digital realm. Type commands, solve challenges, explore secrets.
               </p>
             </div>
 
             <InteractiveTerminal onNavigate={onNavigate} />
 
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
+            <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+              <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Trophy className="text-yellow-600" size={20} />
-                  <h4 className="text-lg font-bold text-white">CTF Challenge</h4>
+                  <Trophy className="text-yellow-600 flex-shrink-0" size={18} />
+                  <h4 className="text-sm sm:text-lg font-bold text-white">CTF Challenge</h4>
                 </div>
-                <p className="text-gray-300 text-sm mb-2">
+                <p className="text-gray-300 text-xs sm:text-sm mb-2">
                   Decode the transformation. Discover the cipher!
                 </p>
-                <div className="text-xs text-gray-400">
-                  <span className="text-yellow-600">●</span> Type "ctf" for the challenge<br />
-                  <span className="text-yellow-600">●</span> Type "hint" for a clue<br />
-                  <span className="text-yellow-600">●</span> Type "submit [flag]" to check
+                <div className="text-xs text-gray-400 space-y-1">
+                  <div><span className="text-yellow-600">●</span> Type "ctf" for the challenge</div>
+                  <div><span className="text-yellow-600">●</span> Type "hint" for a clue</div>
+                  <div><span className="text-yellow-600">●</span> Type "submit [flag]" to check</div>
                 </div>
               </div>
 
-              <div className="p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
+              <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
-                  <Globe className="text-yellow-600" size={20} />
-                  <h4 className="text-lg font-bold text-white">Navigation</h4>
+                  <Globe className="text-yellow-600 flex-shrink-0" size={18} />
+                  <h4 className="text-sm sm:text-lg font-bold text-white">Navigation</h4>
                 </div>
-                <p className="text-gray-300 text-sm mb-2">
+                <p className="text-gray-300 text-xs sm:text-sm mb-2">
                   Click .npz files or use "cat" commands to explore.
                 </p>
-                <div className="text-xs text-gray-400">
-                  <span className="text-yellow-600">●</span> Click encrypted files to navigate<br />
-                  <span className="text-yellow-600">●</span> Type "cat [file]" for direct access<br />
-                  <span className="text-yellow-600">●</span> Type "help" for all commands
+                <div className="text-xs text-gray-400 space-y-1">
+                  <div><span className="text-yellow-600">●</span> Click encrypted files to navigate</div>
+                  <div><span className="text-yellow-600">●</span> Type "cat [file]" for direct access</div>
+                  <div><span className="text-yellow-600">●</span> Type "help" for all commands</div>
                 </div>
               </div>
             </div>

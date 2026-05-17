@@ -273,47 +273,47 @@ export default function Certifications() {
   };
 
   return (
-    <div className="min-h-screen py-20 px-4">
+    <div className="min-h-screen py-12 sm:py-16 md:py-20 px-3 sm:px-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4">
-            <span className="text-6xl">𓉠</span>
-            Certifications
-            <span className="text-6xl">𓉠</span>
+        <div className="text-center mb-12 sm:mb-16">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+            <span className="text-4xl sm:text-6xl">𓉠</span>
+            <span>Certifications</span>
+            <span className="text-4xl sm:text-6xl">𓉠</span>
           </h1>
           <div className="w-32 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto mb-6" />
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-2">
             A collection of my professional certifications and achievements in cybersecurity, networking, and development
           </p>
-          <div className="mt-4 flex items-center justify-center gap-3 text-[#D4AF37]">
+          <div className="mt-4 flex items-center justify-center gap-3 text-[#D4AF37] flex-wrap">
             <Award size={24} />
-            <span className="text-2xl font-bold">{certificates.length}</span>
-            <span className="text-gray-400">Total Certifications</span>
+            <span className="text-xl sm:text-2xl font-bold">{certificates.length}</span>
+            <span className="text-sm sm:text-base text-gray-400">Total Certifications</span>
           </div>
         </div>
 
         {/* Filter Buttons */}
-        <div className="mb-12">
-          <div className="flex flex-wrap justify-center gap-3">
+        <div className="mb-12 sm:mb-16">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
             {issuers.map((issuer) => (
               <button
                 key={issuer}
                 onClick={() => setFilter(issuer)}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all text-xs sm:text-sm ${
                   filter === issuer
                     ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
                     : 'bg-[#1B2845]/70 text-gray-300 hover:bg-[#1B2845] hover:text-[#D4AF37] border border-[#D4AF37]/20'
                 }`}
               >
-                {issuer === 'all' ? 'All Certifications' : issuer}
+                {issuer === 'all' ? 'All' : issuer.length > 20 ? issuer.substring(0, 17) + '...' : issuer}
               </button>
             ))}
           </div>
         </div>
 
         {/* Certifications Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {filteredCertificates.map((cert, index) => (
             <div
               key={cert.id}
@@ -322,38 +322,38 @@ export default function Certifications() {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               {/* Certificate Image */}
-              <div className="relative h-48 overflow-hidden bg-[#0a0e1a]">
+              <div className="relative h-40 sm:h-48 overflow-hidden bg-[#0a0e1a]">
                 <img
                   src={cert.imageUrl}
                   alt={cert.title}
-                  className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-300"
+                  className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-110 transition-transform duration-300"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%231B2845" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23D4AF37" font-size="60"%3E𓉠%3C/text%3E%3C/svg%3E';
                   }}
                 />
-                <div className="absolute top-3 right-3 bg-[#D4AF37] text-[#1B2845] px-3 py-1 rounded-full text-sm font-bold">
+                <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-[#D4AF37] text-[#1B2845] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
                   #{cert.id}
                 </div>
               </div>
 
               {/* Certificate Info */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-[#D4AF37] transition-colors">
+              <div className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-[#D4AF37] transition-colors">
                   {cert.title}
                 </h3>
 
-                <div className="flex items-center gap-2 text-gray-400 mb-2">
-                  <Building2 size={16} />
-                  <span className="text-sm">{cert.issuer}</span>
+                <div className="flex items-center gap-2 text-gray-400 mb-2 text-xs sm:text-sm">
+                  <Building2 size={14} className="flex-shrink-0" />
+                  <span className="truncate">{cert.issuer}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-[#D4AF37] mb-4">
-                  <Calendar size={16} />
-                  <span className="text-sm">{cert.date}</span>
+                <div className="flex items-center gap-2 text-[#D4AF37] mb-3 sm:mb-4 text-xs sm:text-sm">
+                  <Calendar size={14} className="flex-shrink-0" />
+                  <span>{cert.date}</span>
                 </div>
 
-                <p className="text-gray-300 text-sm line-clamp-3 mb-4">
+                <p className="text-gray-300 text-xs sm:text-sm line-clamp-3 mb-3 sm:mb-4">
                   {cert.description}
                 </p>
 
@@ -374,9 +374,9 @@ export default function Certifications() {
                   )}
                 </div>
 
-                <div className="mt-4 flex items-center gap-2 text-[#D4AF37] text-sm font-medium">
+                <div className="mt-3 sm:mt-4 flex items-center gap-2 text-[#D4AF37] text-xs sm:text-sm font-medium">
                   <span>View Details</span>
-                  <ExternalLink size={16} />
+                  <ExternalLink size={14} />
                 </div>
               </div>
             </div>

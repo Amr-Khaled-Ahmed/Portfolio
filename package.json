@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
-    "@react-three/drei": "^10.7.7",
+    "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^9.6.1",
     "@supabase/supabase-js": "^2.57.4",
     "aos": "^2.3.4",

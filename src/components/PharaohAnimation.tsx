@@ -1,191 +1,79 @@
-import React, { useRef, Component } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Mesh } from "three";
-
-class ErrorBoundary extends Component<
-  { children: React.ReactNode },
-  { hasError: boolean }
-> {
-  constructor(props: any) {
-    super(props);
-    this.state = { hasError: false };
-  }
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-  render() {
-    if (this.state.hasError) return null;
-    return this.props.children;
-  }
-}
-
-const EyePupil = () => {
-  const meshRef = useRef<Mesh>(null);
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.z += 0.01;
-      const scale = 1 + Math.sin(Date.now() * 0.002) * 0.1;
-      meshRef.current.scale.set(scale, scale, scale);
-    }
-  });
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0.2]}>
-      <sphereGeometry args={[0.8, 64, 64]} />
-      <meshPhongMaterial color="#FFD700" emissive="#FFA500" shininess={200} />
-    </mesh>
-  );
-};
-
-const EyeIris = () => {
-  const meshRef = useRef<Mesh>(null);
-  useFrame(() => {
-    if (meshRef.current) meshRef.current.rotation.z -= 0.005;
-  });
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0.25]}>
-      <cylinderGeometry args={[0.5, 0.5, 0.2, 64]} />
-      <meshPhongMaterial color="#D4AF37" emissive="#8B7500" shininess={150} />
-    </mesh>
-  );
-};
-
-const EyeGlow = () => {
-  const meshRef = useRef<Mesh>(null);
-  useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.z += 0.003;
-      const opacity = 0.3 + Math.sin(Date.now() * 0.003) * 0.2;
-      if (
-        meshRef.current.material &&
-        typeof meshRef.current.material === "object"
-      ) {
-        (meshRef.current.material as any).opacity = opacity;
-      }
-    }
-  });
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0.1]}>
-      <torusGeometry args={[2, 0.3, 8, 64]} />
-      <meshPhongMaterial
-        color="#FFD700"
-        emissive="#FFB700"
-        shininess={100}
-        transparent
-        opacity={0.6}
-      />
-    </mesh>
-  );
-};
-
-const HieroglyphSymbol = ({
-  position,
-  rotation,
-}: {
-  position: [number, number, number];
-  rotation: number;
-}) => {
-  const groupRef = useRef<any>(null);
-  useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.z += 0.002;
-      groupRef.current.rotation.y += 0.001;
-    }
-  });
-  return (
-    <group ref={groupRef} position={position}>
-      <mesh rotation={[rotation, 0, 0]}>
-        <boxGeometry args={[0.3, 0.4, 0.1]} />
-        <meshPhongMaterial color="#D4AF37" emissive="#B8960A" shininess={120} />
-      </mesh>
-    </group>
-  );
-};
-
-const HieroglyphRing = () => {
-  const groupRef = useRef<any>(null);
-  useFrame(() => {
-    if (groupRef.current) groupRef.current.rotation.z += 0.003;
-  });
-  const symbols = Array.from({ length: 8 }, (_, i) => {
-    const angle = (i / 8) * Math.PI * 2;
-    const radius = 3.5;
-    return {
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-      index: i,
-      angle,
-    };
-  });
-  return (
-    <group ref={groupRef}>
-      {symbols.map((s) => (
-        <HieroglyphSymbol
-          key={s.index}
-          position={[s.x, s.y, 0]}
-          rotation={s.angle}
-        />
-      ))}
-    </group>
-  );
-};
-
-const InnerRing = () => {
-  const meshRef = useRef<Mesh>(null);
-  useFrame(() => {
-    if (meshRef.current) meshRef.current.rotation.z -= 0.004;
-  });
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0.05]}>
-      <torusGeometry args={[1.3, 0.15, 8, 64]} />
-      <meshPhongMaterial color="#FFD700" emissive="#DAA520" shininess={150} />
-    </mesh>
-  );
-};
-
-const MiddleRing = () => {
-  const meshRef = useRef<Mesh>(null);
-  useFrame(() => {
-    if (meshRef.current) meshRef.current.rotation.z += 0.0025;
-  });
-  return (
-    <mesh ref={meshRef} position={[0, 0, 0.08]}>
-      <torusGeometry args={[1.7, 0.1, 8, 64]} />
-      <meshPhongMaterial color="#D4AF37" emissive="#8B7500" shininess={100} />
-    </mesh>
-  );
-};
-
-const Scene = () => {
-  const { camera } = useThree();
-  React.useEffect(() => {
-    camera.position.z = 6;
-    camera.position.y = 0;
-  }, [camera]);
-  return (
-    <>
-      <ambientLight intensity={0.8} color="#D4AF37" />
-      <pointLight position={[5, 5, 5]} intensity={1.3} color="#FFD700" />
-      <pointLight position={[-5, -5, 3]} intensity={0.7} color="#8B7500" />
-      <pointLight position={[0, 0, 3]} intensity={1.0} color="#FFB700" />
-      <InnerRing />
-      <MiddleRing />
-      <EyeGlow />
-      <EyeIris />
-      <EyePupil />
-      <HieroglyphRing />
-    </>
-  );
-};
-
 export default function PharaohAnimationBg() {
   return (
-    <ErrorBoundary>
-      <div className="absolute inset-0 w-full h-full">
-        <Canvas>
-          <color attach="background" args={["#0a0e1a"]} />
-          <Scene />
-        </Canvas>
+    <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#0a0e1a]">
+      <style>{`
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        @keyframes pulse-glow { 0%, 100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.9; transform: scale(1.08); } }
+        @keyframes orbit { from { transform: rotate(0deg) translateX(140px) rotate(0deg); } to { transform: rotate(360deg) translateX(140px) rotate(-360deg); } }
+        .ring-1 { animation: spin-slow 12s linear infinite; }
+        .ring-2 { animation: spin-reverse 8s linear infinite; }
+        .ring-3 { animation: spin-slow 20s linear infinite; }
+        .eye-glow { animation: pulse-glow 3s ease-in-out infinite; }
+        .orb-1 { animation: orbit 10s linear infinite; }
+        .orb-2 { animation: orbit 10s linear infinite; animation-delay: -2.5s; }
+        .orb-3 { animation: orbit 10s linear infinite; animation-delay: -5s; }
+        .orb-4 { animation: orbit 10s linear infinite; animation-delay: -7.5s; }
+      `}</style>
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        {/* Outer orbit dots */}
+        <div className="absolute w-0 h-0">
+          <div
+            className="orb-1 absolute w-3 h-3 bg-yellow-500 rounded-full shadow-lg"
+            style={{ boxShadow: "0 0 10px #FFD700" }}
+          />
+          <div
+            className="orb-2 absolute w-3 h-3 bg-yellow-400 rounded-full"
+            style={{ boxShadow: "0 0 10px #FFD700" }}
+          />
+          <div
+            className="orb-3 absolute w-3 h-3 bg-yellow-500 rounded-full"
+            style={{ boxShadow: "0 0 10px #FFD700" }}
+          />
+          <div
+            className="orb-4 absolute w-3 h-3 bg-yellow-400 rounded-full"
+            style={{ boxShadow: "0 0 10px #FFD700" }}
+          />
+        </div>
+
+        {/* Outer ring */}
+        <div className="ring-3 absolute w-72 h-72 rounded-full border border-yellow-600/20" />
+
+        {/* Middle ring */}
+        <div
+          className="ring-2 absolute w-52 h-52 rounded-full border-2 border-yellow-500/40"
+          style={{ boxShadow: "0 0 20px rgba(212,175,55,0.2)" }}
+        />
+
+        {/* Inner ring */}
+        <div
+          className="ring-1 absolute w-36 h-36 rounded-full border-2 border-yellow-400/60"
+          style={{ boxShadow: "0 0 30px rgba(212,175,55,0.3)" }}
+        />
+
+        {/* Eye of Horus center */}
+        <div
+          className="eye-glow absolute flex items-center justify-center w-20 h-20 rounded-full bg-yellow-500/10"
+          style={{ boxShadow: "0 0 40px rgba(212,175,55,0.5)" }}
+        >
+          <span
+            className="text-5xl select-none"
+            style={{ filter: "drop-shadow(0 0 12px #FFD700)" }}
+          >
+            𓂀
+          </span>
+        </div>
       </div>
-    </ErrorBoundary>
+
+      {/* Background glow */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(212,175,55,0.08) 0%, transparent 70%)",
+        }}
+      />
+    </div>
   );
 }

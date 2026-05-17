@@ -17,6 +17,42 @@ export default function Certifications() {
 
   const certificates: Certificate[] = [
     {
+      id: 24,
+      title: "NSE 4 FortiOS Administrator",
+      issuer: "Fortinet",
+      date: "Issued: 2026",
+      description: "Fortinet NSE 4 - FortiOS Administrator Exam v7.6 certification demonstrates expertise in FortiOS platform administration. This certification validates the ability to configure, manage, and maintain FortiGate security appliances running FortiOS 7.6, including firewall policies, VPN configurations, and network security features.",
+      imageUrl: "/certificates/fortinet-fortios-7-6-administrator-badge.png",
+      skills: ["FortiOS 7.6", "FortiGate", "Firewall Administration", "VPN Configuration", "Network Security", "Security Policies"]
+    },
+    {
+      id: 23,
+      title: "Ubuntu Linux Essentials",
+      issuer: "Mahara Tech",
+      date: "Issued: June 2026",
+      description: "Ubuntu Linux Essentials certification from Mahara Tech covering fundamental Linux concepts, command-line operations, and system administration. Completed 7 hours 20 minutes of intensive training on Ubuntu Linux fundamentals and practical administration skills.",
+      imageUrl: "/certificates/ubuntu_linux_essentials.png",
+      skills: ["Linux", "Ubuntu", "Command Line", "System Administration", "Linux Fundamentals"]
+    },
+    {
+      id: 22,
+      title: "Red Hat System Administration II",
+      issuer: "Red Hat",
+      date: "Issued: May 2026",
+      description: "Red Hat System Administration II (RH134 - RHA) Ver. 10 certification demonstrating advanced Linux system administration skills. Completion of 40 credit hours of intensive training on advanced Red Hat Enterprise Linux administration, configuration, and management.",
+      imageUrl: "/certificates/redhat2.png",
+      skills: ["Red Hat Enterprise Linux", "System Administration", "RHEL 10", "Network Management", "Security Management", "Storage Management"]
+    },
+    {
+      id: 21,
+      title: "Red Hat System Administration I",
+      issuer: "Red Hat",
+      date: "Issued: April 2026",
+      description: "Red Hat System Administration I (RH124 - RHA) Ver. 10 certification demonstrating foundational Linux system administration skills. Completion of 40 credit hours of comprehensive training on Red Hat Enterprise Linux fundamentals, basic administration, and system configuration.",
+      imageUrl: "/certificates/redhat1.png",
+      skills: ["Red Hat Enterprise Linux", "Linux Administration", "RHEL 10", "System Management", "User Management", "File Systems"]
+    },
+    {
       id: 20,
       title: "Fortinet Cybersecurity Engineer",
       issuer: "Digital Egypt Pioneers Initiative (MCIT Egypt)",

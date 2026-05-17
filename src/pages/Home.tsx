@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { Shield, Terminal, Bug, Gamepad2, Trophy, Cpu, Send, Key, Eye, EyeOff, Sparkles, Brain, Skull, Fingerprint, AlertTriangle, Clock, Hash, LockKeyhole, Search, FileCode, FolderOpen, HardDrive, Network, Globe, Users, Bell, Volume2, Settings, Power, RefreshCw, Play, StopCircle, Camera, Battery, Cloud, Sun, Moon, CloudRain, CloudLightning } from 'lucide-react';
+import PharaohAnimationBg from '../components/PharaohAnimation';
 
 // Mock Supabase client - replace with actual implementation
 const mockSupabase = {
@@ -71,6 +72,7 @@ const InteractiveTerminal = ({ onNavigate }: { onNavigate: (page: string) => voi
   const [matrixMode, setMatrixMode] = useState(false);
   const [heartbeat, setHeartbeat] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Update system time
@@ -90,10 +92,10 @@ const InteractiveTerminal = ({ onNavigate }: { onNavigate: (page: string) => voi
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom within terminal container only
   useEffect(() => {
-    if (terminalEndRef.current) {
-      terminalEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
     }
   }, [output]);
 
@@ -503,7 +505,7 @@ const InteractiveTerminal = ({ onNavigate }: { onNavigate: (page: string) => voi
           </div>
         </div>
 
-        <div className="h-80 overflow-y-auto mb-4">
+        <div className="h-80 overflow-y-auto mb-4" ref={terminalContainerRef}>
           {output.map((item, index) => (
             <div key={index} className="mb-1">
               {item.text.startsWith('root@ZeroAccess') ? (
@@ -643,6 +645,10 @@ export default function Home({ onNavigate }: HomeProps) {
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4">
+        {/* 3D Background Animation */}
+        <PharaohAnimationBg />
+        
+        {/* Content Overlay */}
         <div className="relative z-10 max-w-6xl mx-auto text-center">
           <div className="mb-8">
             <h1 className="text-7xl md:text-9xl font-bold text-yellow-600 tracking-wider mb-4">

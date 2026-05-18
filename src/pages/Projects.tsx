@@ -3,7 +3,7 @@ import { Github, ExternalLink, Code2, Shield, Bug, Swords } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Project } from '../types';
 
-type CategoryFilter = 'all' | 'web-dev' | 'cyber' | 'malware' | 'offensive' | 'webdev' | 'crypto' | 'tools' | 'development';
+type CategoryFilter = 'all' | 'cyber' | 'malware' | 'offensive' | 'webdev' | 'crypto' | 'tools' | 'development';
 
 const staticProjects: Project[] = [
   { id: '1', title: "CyberSec-Toolkit", description: "Comprehensive cybersecurity toolkit with automated vulnerability scanning and penetration testing utilities.", longDescription: "A comprehensive collection of cybersecurity tools designed for security professionals and researchers.", category: "tools", tech_stack: ["Python", "Bash", "Nmap", "SQLmap", "Custom Scripts", 'PowerShell', 'C++', 'C'], image_url: "", project_url: "", github_url: "https://github.com/Amr-Khaled-Ahmed/CyberSec-Toolkit", featured: true, created_at: "2024-01-01T00:00:00Z" },
@@ -246,7 +246,6 @@ export default function Projects() {
 
   const categories = [
     { id: 'all' as CategoryFilter, label: 'All Projects', icon: Code2, color: 'from-[#D4AF37] to-[#C19A6B]' },
-    { id: 'web-dev' as CategoryFilter, label: 'Web Dev', icon: Code2, color: 'from-blue-500 to-cyan-500' },
     { id: 'webdev' as CategoryFilter, label: 'Web Development', icon: Code2, color: 'from-blue-500 to-cyan-500' },
     { id: 'cyber' as CategoryFilter, label: 'Cyber Security', icon: Shield, color: 'from-green-500 to-emerald-500' },
     { id: 'malware' as CategoryFilter, label: 'Malware', icon: Bug, color: 'from-pink-500 to-rose-500' },
@@ -290,7 +289,6 @@ export default function Projects() {
 
   const getProjectCount = (categoryId: CategoryFilter) => {
     if (categoryId === 'all') return projects.length;
-    if (categoryId === 'web-dev') return projects.filter(p => p.category === 'webdev' || p.category === 'web-dev').length;
     return projects.filter(p => p.category === categoryId).length;
   };
 

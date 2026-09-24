@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Award, Calendar, Building2, ExternalLink, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Award, Calendar, Building2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface Certificate {
   id: number;
@@ -14,6 +14,7 @@ interface Certificate {
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [filter, setFilter] = useState<string>('all');
+  const [activeTab, setActiveTab] = useState<'details' | 'drive'>('details');
 
   const certificates: Certificate[] = [
     {
@@ -293,14 +294,72 @@ export default function Certifications() {
           </div>
         </div>
 
+        {/* Local certificate views */}
+        <div className="mb-8 flex justify-center">
+          <div className="inline-flex flex-wrap justify-center gap-1 rounded-full border border-[#D4AF37]/20 bg-[#0a0e1a]/70 p-1.5 shadow-lg shadow-black/20 backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setActiveTab('details')}
+              className={`rounded-full px-4 py-2.5 text-sm font-medium transition-all sm:px-6 sm:text-base ${
+                activeTab === 'details'
+                  ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
+                  : 'text-gray-300 hover:text-[#D4AF37]'
+              }`}
+            >
+              Certificate Details
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('drive')}
+              className={`rounded-full px-4 py-2.5 text-sm font-medium transition-all sm:px-6 sm:text-base ${
+                activeTab === 'drive'
+                  ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
+                  : 'text-gray-300 hover:text-[#D4AF37]'
+              }`}
+            >
+              All Certifications
+            </button>
+          </div>
+        </div>
+
+        {activeTab === 'drive' ? (
+          <div className="overflow-hidden rounded-2xl border border-[#D4AF37]/35 bg-[#0a0e1a]/90 shadow-2xl shadow-black/40 backdrop-blur-sm">
+            <div className="flex items-center justify-between border-b border-[#D4AF37]/20 bg-[#111827] px-4 py-3 sm:px-6">
+              <div className="flex items-center gap-3">
+                <div className="flex gap-1.5" aria-hidden="true">
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]/50" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]/25" />
+                </div>
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-300 sm:text-sm">
+                  Certification Archive
+                </span>
+              </div>
+              <span className="hidden text-xs text-[#D4AF37] sm:block">PUBLIC COLLECTION</span>
+            </div>
+            <div className="bg-[#1B2845] p-2 sm:p-4">
+              <div className="rounded-xl border border-[#D4AF37]/20 bg-[#d7d9dd] p-1 shadow-inner sm:p-2">
+                <iframe
+                  title="Certificate preview"
+                  src="https://drive.google.com/embeddedfolderview?id=1c4tNEKDlUBmJ6HnBFrQp6G8qV8kUMN1O#grid"
+                  className="h-[70vh] min-h-[520px] w-full rounded-lg bg-white shadow-lg"
+                />
+              </div>
+            </div>
+            <div className="border-t border-[#D4AF37]/15 px-4 py-3 text-center text-xs text-gray-500 sm:px-6">
+              Browse the certification collection
+            </div>
+          </div>
+        ) : (
+          <>
         {/* Filter Buttons */}
-        <div className="mb-12 sm:mb-16">
+        <div className="mb-10 sm:mb-12">
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
             {issuers.map((issuer) => (
               <button
                 key={issuer}
                 onClick={() => setFilter(issuer)}
-                className={`px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all text-xs sm:text-sm ${
+                className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium transition-all text-xs sm:text-sm ${
                   filter === issuer
                     ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
                     : 'bg-[#1B2845]/70 text-gray-300 hover:bg-[#1B2845] hover:text-[#D4AF37] border border-[#D4AF37]/20'
@@ -312,76 +371,56 @@ export default function Certifications() {
           </div>
         </div>
 
-        {/* Certifications Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        {/* Local certificate image gallery */}
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:gap-12">
           {filteredCertificates.map((cert, index) => (
-            <div
+            <button
               key={cert.id}
-              className="group bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl overflow-hidden hover:border-[#D4AF37] transition-all hover:scale-105 hover:shadow-xl hover:shadow-[#D4AF37]/20 cursor-pointer"
+              type="button"
+              className="group text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-4 focus-visible:ring-offset-[#0a0e1a]"
               onClick={() => setSelectedCert(cert)}
               style={{ animationDelay: `${index * 0.1}s` }}
             >
+              <div className="relative overflow-hidden rounded-2xl border border-[#D4AF37]/20 bg-[#0a0e1a]/80 p-2 shadow-xl shadow-black/20 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#D4AF37]/70 group-hover:shadow-[#D4AF37]/10">
               {/* Certificate Image */}
-              <div className="relative h-40 sm:h-48 overflow-hidden bg-[#0a0e1a]">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-[#111827]">
                 <img
                   src={cert.imageUrl}
                   alt={cert.title}
-                  className="w-full h-full object-contain p-3 sm:p-4 group-hover:scale-110 transition-transform duration-300"
+                  loading={index > 5 ? 'lazy' : 'eager'}
+                  className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.04] sm:p-7"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%231B2845" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23D4AF37" font-size="60"%3E𓉠%3C/text%3E%3C/svg%3E';
                   }}
                 />
-                <div className="absolute top-2 sm:top-3 right-2 sm:right-3 bg-[#D4AF37] text-[#1B2845] px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
+                <div className="absolute right-3 top-3 rounded-full bg-[#D4AF37] px-2.5 py-1 text-xs font-bold text-[#1B2845]">
                   #{cert.id}
                 </div>
               </div>
 
               {/* Certificate Info */}
-              <div className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-xl font-bold text-white mb-2 line-clamp-2 group-hover:text-[#D4AF37] transition-colors">
+              <div className="px-2 pb-2 pt-4 sm:px-3">
+                <h3 className="mb-2 line-clamp-2 text-base font-bold text-white transition-colors group-hover:text-[#D4AF37] sm:text-lg">
                   {cert.title}
                 </h3>
 
-                <div className="flex items-center gap-2 text-gray-400 mb-2 text-xs sm:text-sm">
+                <div className="mb-1 flex items-center gap-2 text-xs text-gray-400 sm:text-sm">
                   <Building2 size={14} className="flex-shrink-0" />
                   <span className="truncate">{cert.issuer}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-[#D4AF37] mb-3 sm:mb-4 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 text-xs text-[#D4AF37] sm:text-sm">
                   <Calendar size={14} className="flex-shrink-0" />
                   <span>{cert.date}</span>
                 </div>
-
-                <p className="text-gray-300 text-xs sm:text-sm line-clamp-3 mb-3 sm:mb-4">
-                  {cert.description}
-                </p>
-
-                {/* Skills Preview */}
-                <div className="flex flex-wrap gap-2">
-                  {cert.skills.slice(0, 3).map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="px-2 py-1 bg-[#D4AF37]/10 text-[#D4AF37] text-xs rounded border border-[#D4AF37]/30"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                  {cert.skills.length > 3 && (
-                    <span className="px-2 py-1 text-gray-400 text-xs">
-                      +{cert.skills.length - 3} more
-                    </span>
-                  )}
-                </div>
-
-                <div className="mt-3 sm:mt-4 flex items-center gap-2 text-[#D4AF37] text-xs sm:text-sm font-medium">
-                  <span>View Details</span>
-                  <ExternalLink size={14} />
-                </div>
               </div>
             </div>
+            </button>
           ))}
         </div>
+          </>
+        )}
 
         {/* Modal */}
         {selectedCert && (

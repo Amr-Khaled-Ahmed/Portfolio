@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Award, Calendar, Building2, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Award, Calendar, Building2, X, ChevronLeft, ChevronRight, Search, ExternalLink } from 'lucide-react';
 
 interface Certificate {
   id: number;
@@ -11,10 +11,45 @@ interface Certificate {
   skills: string[];
 }
 
+interface DriveCertificate {
+  id: string;
+  name: string;
+  mimeType: string;
+  imageUrl: string;
+  previewUrl: string;
+}
+
+const DRIVE_SCRIPT_URL = import.meta.env.VITE_DRIVE_SCRIPT_URL;
+
+const getDriveImageUrl = (fileId: string) =>
+  `https://drive.google.com/thumbnail?id=${fileId}&sz=w800`;
+
 export default function Certifications() {
   const [selectedCert, setSelectedCert] = useState<Certificate | null>(null);
   const [filter, setFilter] = useState<string>('all');
-  const [activeTab, setActiveTab] = useState<'details' | 'drive'>('details');
+  const [activeTab, setActiveTab] = useState<'details' | 'drive'>('drive');
+  const [driveCertificates, setDriveCertificates] = useState<DriveCertificate[]>([]);
+  const [drivePage, setDrivePage] = useState(1);
+  const [driveLoading, setDriveLoading] = useState(true);
+  const [driveError, setDriveError] = useState('');
+  const [driveSearch, setDriveSearch] = useState('');
+
+  useEffect(() => {
+    const loadDriveCertificates = async () => {
+      try {
+        const response = await fetch(DRIVE_SCRIPT_URL);
+        if (!response.ok) throw new Error(`Request failed with status ${response.status}`);
+        const files = await response.json() as DriveCertificate[];
+        setDriveCertificates(files.filter((file) => file.imageUrl && file.previewUrl));
+      } catch (error) {
+        setDriveError(error instanceof Error ? error.message : 'Unable to load Drive certificates.');
+      } finally {
+        setDriveLoading(false);
+      }
+    };
+
+    void loadDriveCertificates();
+  }, []);
 
   const certificates: Certificate[] = [
     {
@@ -257,6 +292,16 @@ export default function Certifications() {
     ? certificates
     : certificates.filter(cert => cert.issuer === filter);
 
+  const driveCertificatesPerPage = 15;
+  const filteredDriveCertificates = driveSearch.trim()
+    ? driveCertificates.filter(f => f.name.toLowerCase().includes(driveSearch.toLowerCase()))
+    : driveCertificates;
+  const drivePageCount = Math.max(1, Math.ceil(filteredDriveCertificates.length / driveCertificatesPerPage));
+  const visibleDriveCertificates = filteredDriveCertificates.slice(
+    (drivePage - 1) * driveCertificatesPerPage,
+    drivePage * driveCertificatesPerPage,
+  );
+
   const handlePrevious = () => {
     if (!selectedCert) return;
     const currentIndex = filteredCertificates.findIndex(c => c.id === selectedCert.id);
@@ -323,32 +368,187 @@ export default function Certifications() {
         </div>
 
         {activeTab === 'drive' ? (
-          <div className="overflow-hidden rounded-2xl border border-[#D4AF37]/35 bg-[#0a0e1a]/90 shadow-2xl shadow-black/40 backdrop-blur-sm">
-            <div className="flex items-center justify-between border-b border-[#D4AF37]/20 bg-[#111827] px-4 py-3 sm:px-6">
-              <div className="flex items-center gap-3">
-                <div className="flex gap-1.5" aria-hidden="true">
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]/50" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-[#D4AF37]/25" />
-                </div>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-gray-300 sm:text-sm">
-                  Certification Archive
+          <div className="space-y-6">
+            {/* ── Header row: stats + search + open-drive ─────────────────── */}
+            <div className="flex flex-col gap-3">
+              {/* Row 1: stats */}
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#0a0e1a] px-3 py-1 text-xs text-gray-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" />
+                  {driveLoading ? '…' : filteredDriveCertificates.length} total
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-red-500/25 bg-[#0a0e1a] px-3 py-1 text-xs text-gray-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                  {driveLoading ? '…' : driveCertificates.filter(f => f.mimeType === 'application/pdf').length} PDF
+                </span>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/25 bg-[#0a0e1a] px-3 py-1 text-xs text-gray-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-sky-400" />
+                  {driveLoading ? '…' : driveCertificates.filter(f => f.mimeType !== 'application/pdf').length} Image
                 </span>
               </div>
-              <span className="hidden text-xs text-[#D4AF37] sm:block">PUBLIC COLLECTION</span>
-            </div>
-            <div className="bg-[#1B2845] p-2 sm:p-4">
-              <div className="rounded-xl border border-[#D4AF37]/20 bg-[#d7d9dd] p-1 shadow-inner sm:p-2">
-                <iframe
-                  title="Certificate preview"
-                  src="https://drive.google.com/embeddedfolderview?id=1c4tNEKDlUBmJ6HnBFrQp6G8qV8kUMN1O#grid"
-                  className="h-[70vh] min-h-[520px] w-full rounded-lg bg-white shadow-lg"
-                />
+
+              {/* Row 2: search + open-drive */}
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" />
+                  <input
+                    type="text"
+                    placeholder="Search certificates…"
+                    value={driveSearch}
+                    onChange={e => { setDriveSearch(e.target.value); setDrivePage(1); }}
+                    className="h-9 w-full rounded-full border border-[#D4AF37]/20 bg-[#0a0e1a] pl-8 pr-3 text-xs text-gray-300 placeholder-gray-600 outline-none transition-colors focus:border-[#D4AF37]/50"
+                  />
+                </div>
+                <a
+                  href="https://drive.google.com/drive/folders/1c4tNEKDlUBmJ6HnBFrQp6G8qV8kUMN1O"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full border border-[#D4AF37]/30 bg-[#0a0e1a] px-3 sm:px-4 text-xs font-medium text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10"
+                >
+                  <ExternalLink size={12} />
+                  <span className="hidden xs:inline sm:inline">Drive</span>
+                </a>
               </div>
             </div>
-            <div className="border-t border-[#D4AF37]/15 px-4 py-3 text-center text-xs text-gray-500 sm:px-6">
-              Browse the certification collection
-            </div>
+
+            {/* ── Grid ──────────────────────────────────────────────────────── */}
+            {driveLoading ? (
+              /* Skeleton */
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                {Array.from({ length: 15 }).map((_, i) => (
+                  <div key={i} className="animate-pulse overflow-hidden rounded-xl border border-white/5 bg-[#0a0e1a]">
+                    <div className="aspect-[4/3] bg-[#111827]" />
+                    <div className="space-y-2 p-3">
+                      <div className="h-2.5 w-4/5 rounded-md bg-[#111827]" />
+                      <div className="h-2 w-1/3 rounded-md bg-[#111827]" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : driveError ? (
+              /* Error */
+              <div className="flex min-h-64 flex-col items-center justify-center gap-4 rounded-2xl border border-red-500/15 bg-[#0a0e1a] text-center">
+                <span className="text-4xl">⚠️</span>
+                <p className="text-sm text-red-300">Unable to load certificates from Drive</p>
+                <a
+                  href="https://drive.google.com/drive/folders/1c4tNEKDlUBmJ6HnBFrQp6G8qV8kUMN1O"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-medium text-[#D4AF37] transition-colors hover:text-white"
+                >
+                  Open Drive directly →
+                </a>
+              </div>
+            ) : filteredDriveCertificates.length === 0 ? (
+              /* Empty search */
+              <div className="flex min-h-48 flex-col items-center justify-center gap-3 rounded-2xl border border-white/5 bg-[#0a0e1a] text-center">
+                <p className="text-sm text-gray-400">
+                  No certificates match &ldquo;<span className="text-[#D4AF37]">{driveSearch}</span>&rdquo;
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setDriveSearch('')}
+                  className="text-xs text-gray-500 underline hover:text-gray-300 transition-colors"
+                >
+                  Clear search
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+                  {visibleDriveCertificates.map((cert) => {
+                    const isPdf = cert.mimeType === 'application/pdf';
+                    return (
+                      <a
+                        key={cert.id}
+                        href={cert.previewUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group focus:outline-none"
+                        title={cert.name}
+                      >
+                        <div className="overflow-hidden rounded-xl border border-white/5 bg-[#0a0e1a] shadow-md transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-[#D4AF37]/40 group-hover:shadow-xl group-hover:shadow-[#D4AF37]/5 group-focus-visible:ring-2 group-focus-visible:ring-[#D4AF37]">
+
+                          {/* Thumbnail */}
+                          <div className="relative aspect-[4/3] overflow-hidden bg-[#0d1424]">
+                            <img
+                              src={getDriveImageUrl(cert.id)}
+                              alt={cert.name}
+                              loading="lazy"
+                              className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.07]"
+                              onError={(e) => {
+                                const img = e.currentTarget;
+                                if (img.src !== cert.imageUrl) img.src = cert.imageUrl;
+                              }}
+                            />
+
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/30 to-transparent p-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                              <p className="line-clamp-2 text-[11px] font-medium leading-relaxed text-white">
+                                {cert.name}
+                              </p>
+                              <p className="mt-1 text-[10px] font-semibold text-[#D4AF37]">Open ↗</p>
+                            </div>
+
+                            {/* Type badge */}
+                            <div className={`absolute left-2 top-2 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide shadow-sm ${
+                              isPdf
+                                ? 'bg-red-600/90 text-white shadow-red-900/40'
+                                : 'bg-sky-600/90 text-white shadow-sky-900/40'
+                            }`}>
+                              {isPdf ? 'PDF' : 'IMG'}
+                            </div>
+                          </div>
+
+                          {/* Footer */}
+                          <div className="border-t border-white/5 px-3 py-2.5">
+                            <p className="line-clamp-2 text-[11px] leading-relaxed text-gray-400 transition-colors group-hover:text-gray-200">
+                              {cert.name}
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    );
+                  })}
+                </div>
+
+                {/* ── Numbered pagination ─────────────────────────────────── */}
+                {drivePageCount > 1 && (
+                  <div className="flex flex-wrap items-center justify-center gap-1.5 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setDrivePage(p => Math.max(1, p - 1))}
+                      disabled={drivePage === 1}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                      ‹
+                    </button>
+                    {Array.from({ length: drivePageCount }, (_, i) => i + 1).map(page => (
+                      <button
+                        key={page}
+                        type="button"
+                        onClick={() => setDrivePage(page)}
+                        className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                          page === drivePage
+                            ? 'bg-[#D4AF37] text-[#1B2845] shadow-md shadow-[#D4AF37]/30'
+                            : 'text-gray-400 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setDrivePage(p => Math.min(drivePageCount, p + 1))}
+                      disabled={drivePage === drivePageCount}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
+                    >
+                      ›
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ) : (
           <>
@@ -372,7 +572,7 @@ export default function Certifications() {
         </div>
 
         {/* Local certificate image gallery */}
-        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-10 lg:gap-12">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-8 lg:gap-10">
           {filteredCertificates.map((cert, index) => (
             <button
               key={cert.id}
@@ -388,30 +588,30 @@ export default function Certifications() {
                   src={cert.imageUrl}
                   alt={cert.title}
                   loading={index > 5 ? 'lazy' : 'eager'}
-                  className="h-full w-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.04] sm:p-7"
+                  className="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-[1.04] sm:p-7"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
                     target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%231B2845" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23D4AF37" font-size="60"%3E𓉠%3C/text%3E%3C/svg%3E';
                   }}
                 />
-                <div className="absolute right-3 top-3 rounded-full bg-[#D4AF37] px-2.5 py-1 text-xs font-bold text-[#1B2845]">
+                <div className="absolute right-2 top-2 rounded-full bg-[#D4AF37] px-2 py-0.5 text-xs font-bold text-[#1B2845] sm:right-3 sm:top-3 sm:px-2.5 sm:py-1">
                   #{cert.id}
                 </div>
               </div>
 
               {/* Certificate Info */}
-              <div className="px-2 pb-2 pt-4 sm:px-3">
-                <h3 className="mb-2 line-clamp-2 text-base font-bold text-white transition-colors group-hover:text-[#D4AF37] sm:text-lg">
+              <div className="px-2 pb-2 pt-3 sm:px-3 sm:pt-4">
+                <h3 className="mb-1.5 line-clamp-2 text-sm font-bold text-white transition-colors group-hover:text-[#D4AF37] sm:mb-2 sm:text-lg">
                   {cert.title}
                 </h3>
 
-                <div className="mb-1 flex items-center gap-2 text-xs text-gray-400 sm:text-sm">
-                  <Building2 size={14} className="flex-shrink-0" />
+                <div className="mb-1 flex items-center gap-2 text-xs text-gray-400">
+                  <Building2 size={13} className="flex-shrink-0" />
                   <span className="truncate">{cert.issuer}</span>
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-[#D4AF37] sm:text-sm">
-                  <Calendar size={14} className="flex-shrink-0" />
+                <div className="flex items-center gap-2 text-xs text-[#D4AF37]">
+                  <Calendar size={13} className="flex-shrink-0" />
                   <span>{cert.date}</span>
                 </div>
               </div>
@@ -424,41 +624,43 @@ export default function Certifications() {
 
         {/* Modal */}
         {selectedCert && (
-          <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-[#1B2845] border-2 border-[#D4AF37]/30 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/80 backdrop-blur-sm sm:items-center sm:p-4">
+            <div className="flex max-h-[95dvh] w-full flex-col overflow-hidden rounded-t-2xl border-2 border-[#D4AF37]/30 bg-[#1B2845] sm:max-h-[90vh] sm:max-w-4xl sm:rounded-xl">
+
               {/* Modal Header */}
-              <div className="sticky top-0 bg-[#1B2845] border-b border-[#D4AF37]/30 p-6 flex justify-between items-start">
-                <div className="flex-1">
-                  <h2 className="text-3xl font-bold text-[#D4AF37] mb-2">
+              <div className="sticky top-0 z-10 flex items-start justify-between gap-3 border-b border-[#D4AF37]/30 bg-[#1B2845] px-4 py-4 sm:px-6 sm:py-5">
+                <div className="min-w-0 flex-1">
+                  <h2 className="mb-1.5 line-clamp-2 text-lg font-bold text-[#D4AF37] sm:text-2xl md:text-3xl">
                     {selectedCert.title}
                   </h2>
-                  <div className="flex items-center gap-4 text-gray-300">
-                    <div className="flex items-center gap-2">
-                      <Building2 size={18} />
-                      <span>{selectedCert.issuer}</span>
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-300 sm:text-sm">
+                    <div className="flex items-center gap-1.5">
+                      <Building2 size={14} className="shrink-0" />
+                      <span className="truncate max-w-[200px] sm:max-w-none">{selectedCert.issuer}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Calendar size={18} />
+                    <div className="flex items-center gap-1.5">
+                      <Calendar size={14} className="shrink-0" />
                       <span>{selectedCert.date}</span>
                     </div>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedCert(null)}
-                  className="text-gray-400 hover:text-[#D4AF37] transition-colors"
+                  className="shrink-0 rounded-lg p-1 text-gray-400 transition-colors hover:text-[#D4AF37]"
+                  aria-label="Close"
                 >
-                  <X size={32} />
+                  <X size={26} />
                 </button>
               </div>
 
-              {/* Modal Content */}
-              <div className="p-6">
+              {/* Modal Content — scrollable */}
+              <div className="overflow-y-auto p-4 sm:p-6">
                 {/* Certificate Image */}
-                <div className="mb-6 bg-[#0a0e1a] rounded-lg p-8">
+                <div className="mb-5 rounded-lg bg-[#0a0e1a] p-4 sm:mb-6 sm:p-8">
                   <img
                     src={selectedCert.imageUrl}
                     alt={selectedCert.title}
-                    className="w-full max-h-96 object-contain mx-auto"
+                    className="mx-auto max-h-64 w-full object-contain sm:max-h-96"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%231B2845" width="400" height="300"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23D4AF37" font-size="80"%3E𓉠%3C/text%3E%3C/svg%3E';
@@ -467,27 +669,27 @@ export default function Certifications() {
                 </div>
 
                 {/* Description */}
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                    <span className="text-2xl">𓀀</span>
+                <div className="mb-5 sm:mb-6">
+                  <h3 className="mb-2 flex items-center gap-2 text-base font-bold text-white sm:text-xl">
+                    <span className="text-xl sm:text-2xl">𓀀</span>
                     Description
                   </h3>
-                  <p className="text-gray-300 leading-relaxed">
+                  <p className="text-sm leading-relaxed text-gray-300 sm:text-base">
                     {selectedCert.description}
                   </p>
                 </div>
 
                 {/* Skills */}
-                <div className="mb-6">
-                  <h3 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                    <span className="text-2xl">𓁢</span>
-                    Skills & Technologies
+                <div className="mb-5 sm:mb-6">
+                  <h3 className="mb-2 flex items-center gap-2 text-base font-bold text-white sm:text-xl">
+                    <span className="text-xl sm:text-2xl">𓁢</span>
+                    Skills &amp; Technologies
                   </h3>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     {selectedCert.skills.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="px-4 py-2 bg-[#D4AF37]/10 text-[#D4AF37] rounded-lg border border-[#D4AF37]/30 hover:bg-[#D4AF37]/20 transition-colors"
+                        className="rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-1.5 text-xs text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/20 sm:px-4 sm:py-2 sm:text-sm"
                       >
                         {skill}
                       </span>
@@ -496,25 +698,29 @@ export default function Certifications() {
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="flex justify-between items-center pt-6 border-t border-[#D4AF37]/30">
+                <div className="flex items-center justify-between gap-2 border-t border-[#D4AF37]/30 pt-4 sm:pt-6">
                   <button
+                    type="button"
                     onClick={handlePrevious}
+                    aria-label="View previous certificate"
                     disabled={filteredCertificates.findIndex(c => c.id === selectedCert.id) === 0}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#D4AF37]/10 text-[#D4AF37] rounded-lg border border-[#D4AF37]/30 hover:bg-[#D4AF37]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex min-w-0 items-center gap-1.5 rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-2.5 text-xs font-medium text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/20 disabled:cursor-not-allowed disabled:opacity-50 sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
                   >
-                    <ChevronLeft size={20} />
-                    Previous
+                    <ChevronLeft size={16} className="shrink-0" />
+                    <span>Prev</span>
                   </button>
-                  <span className="text-gray-400">
+                  <span className="shrink-0 text-xs text-gray-400 sm:text-sm">
                     {filteredCertificates.findIndex(c => c.id === selectedCert.id) + 1} / {filteredCertificates.length}
                   </span>
                   <button
+                    type="button"
                     onClick={handleNext}
+                    aria-label="View next certificate"
                     disabled={filteredCertificates.findIndex(c => c.id === selectedCert.id) === filteredCertificates.length - 1}
-                    className="flex items-center gap-2 px-6 py-3 bg-[#D4AF37]/10 text-[#D4AF37] rounded-lg border border-[#D4AF37]/30 hover:bg-[#D4AF37]/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex min-w-0 items-center gap-1.5 rounded-lg border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-3 py-2.5 text-xs font-medium text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/20 disabled:cursor-not-allowed disabled:opacity-50 sm:gap-2 sm:px-5 sm:py-3 sm:text-sm"
                   >
-                    Next
-                    <ChevronRight size={20} />
+                    <span>Next</span>
+                    <ChevronRight size={16} className="shrink-0" />
                   </button>
                 </div>
               </div>

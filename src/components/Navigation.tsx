@@ -37,7 +37,7 @@ export default function Navigation({ currentPage = 'home', onNavigate }: Navigat
               <h1 className="text-2xl font-bold text-[#D4AF37] tracking-wider">
                 Amr Eldhshan
               </h1>
-              <p className="text-xs text-gray-400 font-mono">Malware Analyst</p>
+              <p className="text-xs text-gray-400 font-mono">SOC Engineer</p>
             </div>
           </div>
 

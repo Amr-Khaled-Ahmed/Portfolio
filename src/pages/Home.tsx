@@ -982,19 +982,19 @@ export default function Home({ onNavigate }: HomeProps) {
           <PharaohAnimationBg />
         </Suspense>
         {/* Content Overlay */}
-        <div className="relative z-10 max-w-6xl mx-auto text-center w-full">
-          <div className="mb-4 sm:mb-8">
+        <div className="relative z-10 mx-auto w-full max-w-6xl text-center">
+          <div className="dashboard-reveal mb-4 sm:mb-8">
             <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-yellow-600 tracking-wider mb-2 sm:mb-4 break-words">
               Amr Eldhshan
             </h1>
           </div>
 
-          <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12 px-2 sm:px-0">
+          <div className="dashboard-reveal space-y-3 sm:space-y-4 mb-8 sm:mb-12 px-2 sm:px-0" style={{ animationDelay: '120ms' }}>
             <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-wide break-words">
-              Security Specialist
+              SOC Engineer
             </h2>
             <p className="text-sm sm:text-lg md:text-xl lg:text-2xl text-cyan-600 font-mono break-words">
-              Egyptian Cyber Warrior | Network Security | Malware Analysis
+              Egyptian Cyber Warrior | Security Operations | Network Defense
             </p>
             <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-gray-400 text-xs sm:text-sm md:text-base lg:text-lg">
               <div className="flex items-center gap-1 sm:gap-2">
@@ -1013,42 +1013,43 @@ export default function Home({ onNavigate }: HomeProps) {
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
                 <Bug className="text-yellow-600 flex-shrink-0" size={16} />
-                <span className="hidden sm:inline">Malware Analyst</span>
-                <span className="sm:hidden">Malware</span>
+                <span className="hidden sm:inline">SOC Engineer</span>
+                <span className="sm:hidden">SOC</span>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 mb-6 sm:mb-8 px-2 sm:px-0">
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+          <div className="grid grid-cols-2 gap-2 px-2 sm:gap-3 sm:px-0 md:grid-cols-4 dashboard-reveal" style={{ animationDelay: '220ms' }}>
+            <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
               <div className="text-xs text-gray-400 mb-1">Session Time</div>
               <div className="text-sm sm:text-xl text-yellow-600 font-mono">
                 {sessionTime}
               </div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+            <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
               <div className="text-xs text-gray-400 mb-1">Commands</div>
               <div className="text-sm sm:text-xl text-yellow-600 font-mono">
                 20+
               </div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+            <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
               <div className="text-xs text-gray-400 mb-1">Files</div>
               <div className="text-sm sm:text-xl text-yellow-600 font-mono">
                 5
               </div>
             </div>
-            <div className="bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
+            <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
               <div className="text-xs sm:text-sm text-gray-400 mb-1">
                 CTF Status
               </div>
-              <div className="text-sm sm:text-xl text-yellow-600 font-mono">
+              <div className="flex items-center justify-center gap-2 text-sm sm:text-xl text-yellow-600 font-mono">
+                <span className="status-pulse h-2 w-2 rounded-full bg-green-400" />
                 ACTIVE
               </div>
             </div>
           </div>
 
-          <div className="mb-8 sm:mb-16 max-w-4xl mx-auto px-2 sm:px-4">
+          <div className="dashboard-reveal mb-8 sm:mb-16 max-w-4xl mx-auto px-2 sm:px-4" style={{ animationDelay: '340ms' }}>
             <div className="text-center mb-4 sm:mb-6">
               <h3 className="text-lg sm:text-2xl font-bold text-yellow-600 mb-2 flex items-center justify-center gap-2 flex-wrap">
                 <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
@@ -1061,7 +1062,9 @@ export default function Home({ onNavigate }: HomeProps) {
               </p>
             </div>
 
-            <InteractiveTerminal onNavigate={onNavigate} />
+            <div className="terminal-scanline rounded-xl">
+              <InteractiveTerminal onNavigate={onNavigate} />
+            </div>
 
             <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">

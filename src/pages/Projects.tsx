@@ -1,9 +1,26 @@
 import { useEffect, useState } from 'react';
-import { Github, ExternalLink, Code2, Shield, Bug, Swords } from 'lucide-react';
+import { Github, ExternalLink, Code2, Shield, Bug, Swords, Star, GitFork, Calendar, RefreshCw, Search, SlidersHorizontal } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { Project } from '../types';
 
 type CategoryFilter = 'all' | 'cyber' | 'malware' | 'offensive' | 'webdev' | 'crypto' | 'tools' | 'development';
+
+interface GithubRepository {
+  id: number;
+  name: string;
+  full_name: string;
+  description: string | null;
+  html_url: string;
+  homepage: string | null;
+  language: string | null;
+  topics: string[];
+  stargazers_count: number;
+  forks_count: number;
+  updated_at: string;
+  fork: boolean;
+}
+
+type GithubSort = 'updated' | 'name' | 'stars';
 
 const staticProjects: Project[] = [
   { id: '1', title: "CyberSec-Toolkit", description: "Comprehensive cybersecurity toolkit with automated vulnerability scanning and penetration testing utilities.", longDescription: "A comprehensive collection of cybersecurity tools designed for security professionals and researchers.", category: "tools", tech_stack: ["Python", "Bash", "Nmap", "SQLmap", "Custom Scripts", 'PowerShell', 'C++', 'C'], image_url: "", project_url: "", github_url: "https://github.com/Amr-Khaled-Ahmed/CyberSec-Toolkit", featured: true, created_at: "2024-01-01T00:00:00Z" },
@@ -243,6 +260,14 @@ export default function Projects() {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<'catalogue' | 'github'>('github');
+  const [githubRepositories, setGithubRepositories] = useState<GithubRepository[]>([]);
+  const [githubLoading, setGithubLoading] = useState(false);
+  const [githubError, setGithubError] = useState('');
+  const [githubQuery, setGithubQuery] = useState('');
+  const [githubLanguage, setGithubLanguage] = useState('all');
+  const [githubSort, setGithubSort] = useState<GithubSort>('updated');
+  const [showForks, setShowForks] = useState(true);
 
   const categories = [
     { id: 'all' as CategoryFilter, label: 'All Projects', icon: Code2, color: 'from-[#D4AF37] to-[#C19A6B]' },
@@ -256,6 +281,12 @@ export default function Projects() {
   ];
 
   useEffect(() => { loadProjects(); }, []);
+
+  useEffect(() => {
+    if (activeTab === 'github' && githubRepositories.length === 0 && !githubError) {
+      loadGithubRepositories();
+    }
+  }, [activeTab, githubRepositories.length, githubError]);
 
   useEffect(() => {
     if (selectedCategory === 'all') {
@@ -292,6 +323,43 @@ export default function Projects() {
     return projects.filter(p => p.category === categoryId).length;
   };
 
+  const loadGithubRepositories = async () => {
+    setGithubLoading(true);
+    setGithubError('');
+    try {
+      const response = await fetch('https://api.github.com/users/Amr-Khaled-Ahmed/repos?per_page=100&sort=updated');
+      if (!response.ok) throw new Error('GitHub repositories could not be loaded.');
+      const repositories = await response.json() as GithubRepository[];
+      setGithubRepositories(repositories.sort((first, second) => (
+        new Date(second.updated_at).getTime() - new Date(first.updated_at).getTime()
+      )));
+    } catch {
+      setGithubError('GitHub is temporarily unavailable. Please try again later.');
+    } finally {
+      setGithubLoading(false);
+    }
+  };
+
+  const githubLanguages = ['all', ...Array.from(new Set(
+    githubRepositories.map(repository => repository.language).filter(Boolean) as string[]
+  )).sort()];
+
+  const visibleGithubRepositories = githubRepositories
+    .filter((repository) => {
+      const searchableText = [repository.name, repository.description, repository.language, ...repository.topics]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+      return searchableText.includes(githubQuery.trim().toLowerCase())
+        && (githubLanguage === 'all' || repository.language === githubLanguage)
+        && (showForks || !repository.fork);
+    })
+    .sort((first, second) => {
+      if (githubSort === 'name') return first.name.localeCompare(second.name);
+      if (githubSort === 'stars') return second.stargazers_count - first.stargazers_count;
+      return new Date(second.updated_at).getTime() - new Date(first.updated_at).getTime();
+    });
+
   return (
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -310,6 +378,35 @@ export default function Projects() {
           </div>
         </div>
 
+        <div className="mb-12 flex justify-center" data-aos="fade-up" data-aos-delay="50">
+          <div className="inline-flex flex-wrap justify-center gap-1 rounded-full border border-[#D4AF37]/20 bg-[#0a0e1a]/70 p-1.5 shadow-lg shadow-black/20 backdrop-blur-sm">
+            <button
+              type="button"
+              onClick={() => setActiveTab('catalogue')}
+              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all sm:px-6 sm:text-base ${
+                activeTab === 'catalogue'
+                  ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
+                  : 'text-gray-300 hover:text-[#D4AF37]'
+              }`}
+            >
+              Project Catalogue
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveTab('github')}
+              className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all sm:px-6 sm:text-base ${
+                activeTab === 'github'
+                  ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
+                  : 'text-gray-300 hover:text-[#D4AF37]'
+              }`}
+            >
+              GitHub Repositories
+            </button>
+          </div>
+        </div>
+
+        {activeTab === 'catalogue' ? (
+          <>
         <div className="mb-12" data-aos="fade-up" data-aos-delay="100">
           <div className="flex flex-wrap justify-center gap-4">
             {categories.map((category) => {
@@ -395,6 +492,131 @@ export default function Projects() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+          </>
+        ) : githubLoading ? (
+          <div className="flex items-center justify-center py-20 text-[#D4AF37]">
+            <RefreshCw className="mr-3 animate-spin" size={28} />
+            Loading GitHub repositories...
+          </div>
+        ) : githubError ? (
+          <div className="mx-auto max-w-xl rounded-2xl border border-[#D4AF37]/20 bg-[#1B2845]/70 p-8 text-center">
+            <Github className="mx-auto mb-4 text-[#D4AF37]" size={42} />
+            <p className="mb-5 text-gray-300">{githubError}</p>
+            <button
+              type="button"
+              onClick={loadGithubRepositories}
+              className="rounded-lg bg-[#D4AF37] px-5 py-2.5 font-semibold text-[#1B2845] transition-colors hover:bg-[#C19A6B]"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : (
+          <div>
+            <div className="mb-6 flex flex-col gap-4 border-b border-[#D4AF37]/20 pb-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#D4AF37]">Live from GitHub</p>
+                <h2 className="mt-1 text-2xl font-bold text-white sm:text-3xl">Public Repositories</h2>
+              </div>
+              <span className="text-sm text-gray-400">Showing {visibleGithubRepositories.length} of {githubRepositories.length}</span>
+            </div>
+            <div className="mb-8 rounded-2xl border border-[#D4AF37]/20 bg-[#1B2845]/50 p-4 shadow-lg shadow-black/10 backdrop-blur-sm">
+              <div className="mb-4 flex items-center gap-2 text-sm font-semibold text-[#D4AF37]">
+                <SlidersHorizontal size={17} />
+                Explore repositories
+              </div>
+              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
+                <label className="relative block">
+                  <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
+                  <input
+                    type="search"
+                    value={githubQuery}
+                    onChange={(event) => setGithubQuery(event.target.value)}
+                    placeholder="Search repositories, topics, or languages"
+                    className="w-full rounded-lg border border-[#D4AF37]/20 bg-[#0a0e1a]/70 py-2.5 pl-10 pr-3 text-sm text-white outline-none transition-colors placeholder:text-gray-500 focus:border-[#D4AF37]"
+                  />
+                </label>
+                <select
+                  value={githubLanguage}
+                  onChange={(event) => setGithubLanguage(event.target.value)}
+                  className="rounded-lg border border-[#D4AF37]/20 bg-[#0a0e1a]/70 px-3 py-2.5 text-sm text-gray-300 outline-none focus:border-[#D4AF37]"
+                  aria-label="Filter by language"
+                >
+                  {githubLanguages.map(language => <option key={language} value={language}>{language === 'all' ? 'All languages' : language}</option>)}
+                </select>
+                <select
+                  value={githubSort}
+                  onChange={(event) => setGithubSort(event.target.value as GithubSort)}
+                  className="rounded-lg border border-[#D4AF37]/20 bg-[#0a0e1a]/70 px-3 py-2.5 text-sm text-gray-300 outline-none focus:border-[#D4AF37]"
+                  aria-label="Sort repositories"
+                >
+                  <option value="updated">Recently updated</option>
+                  <option value="name">Name A-Z</option>
+                  <option value="stars">Most stars</option>
+                </select>
+                <button
+                  type="button"
+                  onClick={() => setShowForks(current => !current)}
+                  className={`rounded-lg border px-3 py-2.5 text-sm transition-colors ${showForks ? 'border-[#D4AF37]/40 bg-[#D4AF37]/10 text-[#D4AF37]' : 'border-gray-600 text-gray-400'}`}
+                >
+                  {showForks ? 'Forks shown' : 'Hide forks'}
+                </button>
+              </div>
+            </div>
+            {visibleGithubRepositories.length === 0 ? (
+              <div className="rounded-2xl border border-[#D4AF37]/20 bg-[#1B2845]/50 py-16 text-center text-gray-400">
+                No repositories match these filters.
+              </div>
+            ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {visibleGithubRepositories.map((repository, index) => (
+                <article
+                  key={repository.id}
+                  data-aos="zoom-in"
+                  data-aos-delay={index * 50}
+                  className="group relative overflow-hidden rounded-xl border-2 border-[#D4AF37]/20 bg-[#1B2845]/70 p-6 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D4AF37] hover:shadow-2xl hover:shadow-[#D4AF37]/20"
+                >
+                  <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 rounded-bl-full bg-[#D4AF37]/10 transition-transform group-hover:scale-150" />
+                  <div className="relative">
+                    <div className="mb-4 flex items-start justify-between gap-3">
+                      <Github className="text-[#D4AF37]" size={25} />
+                      {repository.fork && <span className="rounded-full bg-[#2E8B93]/20 px-2 py-1 text-xs text-[#61c7ce]">Fork</span>}
+                    </div>
+                    <h3 className="mb-3 break-words text-xl font-bold text-white transition-colors group-hover:text-[#D4AF37]">
+                      {repository.name}
+                    </h3>
+                    <p className="mb-5 min-h-16 text-sm leading-relaxed text-gray-400">
+                      {repository.description || 'No description provided for this repository.'}
+                    </p>
+                    <div className="mb-5 flex flex-wrap gap-2">
+                      {[repository.language, ...repository.topics].filter(Boolean).slice(0, 5).map((topic) => (
+                        <span key={topic} className="rounded bg-[#2E8B93]/20 px-2 py-1 text-xs font-mono text-[#61c7ce]">{topic}</span>
+                      ))}
+                    </div>
+                    <div className="mb-5 flex flex-wrap items-center gap-4 text-xs text-gray-400">
+                      <span className="flex items-center gap-1"><Star size={14} className="text-[#D4AF37]" /> {repository.stargazers_count}</span>
+                      <span className="flex items-center gap-1"><GitFork size={14} className="text-[#D4AF37]" /> {repository.forks_count}</span>
+                      <span className="flex items-center gap-1"><Calendar size={14} /> {new Date(repository.updated_at).toLocaleDateString()}</span>
+                    </div>
+                    <a
+                      href={repository.html_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-lg bg-[#D4AF37]/10 px-4 py-2 text-sm font-medium text-[#D4AF37] transition-colors hover:bg-[#D4AF37] hover:text-[#1B2845]"
+                    >
+                      <Github size={17} /> View Repository
+                    </a>
+                    {repository.homepage && (
+                      <a href={repository.homepage} target="_blank" rel="noopener noreferrer" className="ml-3 inline-flex items-center gap-1 text-sm text-[#61c7ce] hover:underline">
+                        <ExternalLink size={15} /> Demo
+                      </a>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+            )}
           </div>
         )}
       </div>

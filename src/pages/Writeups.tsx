@@ -22,7 +22,6 @@ export default function Writeups() {
   const categories = [
     { id: 'all' as CategoryFilter, label: 'All Writeups', icon: FileText, color: 'from-[#D4AF37] to-[#C19A6B]' },
     { id: 'malware' as CategoryFilter, label: 'Malware Analysis', icon: Bug, color: 'from-pink-500 to-rose-500' },
-    { id: 'malware-analysis' as CategoryFilter, label: 'Malware Analysis', icon: Bug, color: 'from-pink-500 to-rose-500' },
     { id: 'ctf' as CategoryFilter, label: 'CTF', icon: Flag, color: 'from-green-500 to-emerald-500' },
     { id: 'bug-bounty' as CategoryFilter, label: 'Bug Bounty', icon: DollarSign, color: 'from-yellow-500 to-orange-500' },
     { id: 'research' as CategoryFilter, label: 'Research', icon: FileText, color: 'from-blue-500 to-cyan-500' },
@@ -100,7 +99,7 @@ export default function Writeups() {
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16" data-aos="fade-up">
-          <h1 className="text-5xl md:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4 flex-wrap">
             <span className="text-6xl">𓀀</span>
             Writeups
             <span className="text-6xl">𓀀</span>
@@ -156,7 +155,7 @@ export default function Writeups() {
                 key={writeup.id}
                 data-aos="fade-right"
                 data-aos-delay={idx * 50}
-                className="group relative bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl overflow-hidden hover:border-[#D4AF37] transition-all duration-300 hover:transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-[#D4AF37]/20"
+                className="group relative bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl overflow-hidden hover:border-[#D4AF37] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#D4AF37]/20"
               >
                 <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 rounded-bl-full transform translate-x-32 -translate-y-32 group-hover:scale-150 transition-transform" />
                 <div className="relative p-6 md:p-8">
@@ -197,38 +196,6 @@ export default function Writeups() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {writeups.filter(w => w.featured).length > 0 && selectedCategory === 'all' && (
-          <div className="mt-16" data-aos="fade-up">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4">
-                <span className="text-4xl">⭐</span>Featured Writeups<span className="text-4xl">⭐</span>
-              </h2>
-              <div className="w-24 h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mx-auto" />
-            </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              {writeups.filter(w => w.featured).map((writeup, idx) => (
-                <div key={writeup.id} data-aos="zoom-in" data-aos-delay={idx * 100} className="group relative bg-gradient-to-br from-[#D4AF37]/10 to-transparent backdrop-blur-sm border-2 border-[#D4AF37]/30 rounded-xl p-6 hover:border-[#D4AF37] transition-all hover:scale-105">
-                  <div className="absolute top-4 right-4 text-3xl text-[#D4AF37] animate-pulse">⭐</div>
-                  <div className="mb-4">
-                    <span className="px-3 py-1 bg-[#D4AF37]/30 text-[#D4AF37] rounded-full text-sm font-bold">Featured</span>
-                    <span className="ml-2 px-3 py-1 bg-[#2E8B93]/20 text-[#2E8B93] rounded-full text-sm font-mono">{getCategoryLabel(writeup.category)}</span>
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-[#D4AF37] transition-colors">{writeup.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{writeup.description}</p>
-                  <div className="flex items-center justify-between">
-                    <a href={writeup.content_url} target="_blank" rel="noopener noreferrer" className="text-sm text-[#D4AF37] hover:underline flex items-center gap-1">
-                      Read Now <ExternalLink size={14} />
-                    </a>
-                    <span className="text-xs text-gray-500">
-                      {new Date(writeup.published_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Mail, Github, Linkedin, Twitter, MessageSquare, Send, CheckCircle, Building2, Briefcase, FileText } from 'lucide-react';
+import { Mail, Github, Linkedin, BookOpen, MessageSquare, Send, CheckCircle, Building2, Briefcase, FileText, Download } from 'lucide-react';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -50,12 +50,12 @@ export default function Contact() {
       username: 'amr-eldhshan'
     },
     {
-      name: 'Portfolio',
-      icon: Twitter,
-      url: 'https://amr-khaled-ahmed.github.io/Portfolio/',
-      color: 'hover:text-[#39ff14]',
-      bgColor: 'hover:bg-[#39ff14]/20',
-      username: 'Visit Portfolio'
+      name: 'Medium',
+      icon: BookOpen,
+      url: 'https://medium.com/@amrkhaledv2171516',
+      color: 'hover:text-[#00ab6c]',
+      bgColor: 'hover:bg-[#00ab6c]/20',
+      username: '@amrkhaledv2171516'
     },
     {
       name: 'Email',
@@ -63,7 +63,7 @@ export default function Contact() {
       url: 'mailto:amrKhaledv2171516@gmail.com',
       color: 'hover:text-[#D4AF37]',
       bgColor: 'hover:bg-[#D4AF37]/20',
-      username: 'Contact Direct'
+      username: 'amrKhaledv2171516@gmail.com'
     },
   ];
 
@@ -71,12 +71,15 @@ export default function Contact() {
     'Web Development',
     'Mobile Development',
     'UI/UX Design',
-    'Consulting',
-    'flag found',
+    'Security Consulting',
+    'Penetration Testing',
+    'Malware Analysis',
+    'CTF Collaboration',
     'Other'
   ];
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     if (!formData.name || !formData.email || !formData.message) {
       setError('Please fill in Name, Email, and Message fields');
       return;
@@ -110,14 +113,11 @@ export default function Contact() {
         })
       };
 
-      const response = await window.emailjs.send(
+      await window.emailjs.send(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         templateParams
       );
-
-      console.log('EmailJS Response:', response);
-      console.log('Sent data:', templateParams);
 
       setSuccess(true);
       setFormData({
@@ -151,17 +151,29 @@ export default function Contact() {
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Let's connect! Whether you have a question, collaboration idea, or just want to say hi
           </p>
+
+          {/* CV Download Banner */}
+          <div className="mt-6 inline-flex items-center gap-3 rounded-xl border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-5 py-3 text-sm">
+            <Download size={18} className="text-[#D4AF37]" />
+            <span className="text-gray-300">Want my credentials?</span>
+            <a
+              href="mailto:amrKhaledv2171516@gmail.com?subject=CV%20Request&body=Hi%20Amr%2C%20I'd%20like%20to%20receive%20your%20CV."
+              className="font-semibold text-[#D4AF37] underline underline-offset-2 hover:text-[#C19A6B] transition-colors"
+            >
+              Request CV via email →
+            </a>
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-12">
+        <div className="grid lg:grid-cols-2 gap-8 mb-12">
           <div>
-            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-8">
+            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-6 sm:p-8">
               <div className="flex items-center gap-3 mb-6">
                 <MessageSquare className="text-[#D4AF37]" size={32} />
                 <h2 className="text-3xl font-bold text-white">Send a Message</h2>
               </div>
 
-              <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
@@ -173,7 +185,8 @@ export default function Contact() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-4 py-3 bg-[#0a0e1a]/50 border-2 border-[#D4AF37]/20 rounded-lg text-white placeholder-gray-500 focus:border-[#D4AF37] focus:outline-none transition-colors"
-                      placeholder="name"
+                      placeholder="Your name"
+                      autoComplete="name"
                     />
                   </div>
 
@@ -188,6 +201,7 @@ export default function Contact() {
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-4 py-3 bg-[#0a0e1a]/50 border-2 border-[#D4AF37]/20 rounded-lg text-white placeholder-gray-500 focus:border-[#D4AF37] focus:outline-none transition-colors"
                       placeholder="email@example.com"
+                      autoComplete="email"
                     />
                   </div>
                 </div>
@@ -205,6 +219,7 @@ export default function Contact() {
                       onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                       className="w-full px-4 py-3 bg-[#0a0e1a]/50 border-2 border-[#D4AF37]/20 rounded-lg text-white placeholder-gray-500 focus:border-[#D4AF37] focus:outline-none transition-colors"
                       placeholder="Your Company"
+                      autoComplete="organization"
                     />
                   </div>
 
@@ -243,12 +258,18 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Message *
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label htmlFor="message" className="text-sm font-medium text-gray-300">
+                      Message *
+                    </label>
+                    <span className={`text-xs tabular-nums ${formData.message.length > 900 ? 'text-red-400' : 'text-gray-500'}`}>
+                      {formData.message.length}/1000
+                    </span>
+                  </div>
                   <textarea
                     id="message"
                     rows={6}
+                    maxLength={1000}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-4 py-3 bg-[#0a0e1a]/50 border-2 border-[#D4AF37]/20 rounded-lg text-white placeholder-gray-500 focus:border-[#D4AF37] focus:outline-none transition-colors resize-none"
@@ -270,7 +291,7 @@ export default function Contact() {
                 )}
 
                 <button
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={loading || !emailJsLoaded}
                   className="w-full py-4 bg-[#D4AF37] text-[#1B2845] font-bold rounded-lg hover:bg-[#C19A6B] transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#D4AF37]/30"
                 >
@@ -285,12 +306,12 @@ export default function Contact() {
                     </>
                   )}
                 </button>
-              </div>
+              </form>
             </div>
           </div>
 
           <div className="space-y-8">
-            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-8">
+            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-6 sm:p-8">
               <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
                 <span className="text-4xl">𓁢</span>
                 Connect With Me
@@ -320,7 +341,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-8">
+            <div className="bg-[#1B2845]/70 backdrop-blur-sm border-2 border-[#D4AF37]/20 rounded-xl p-6 sm:p-8">
               <h3 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                 <span className="text-3xl">𓀀</span>
                 Quick Facts
@@ -357,3 +378,4 @@ export default function Contact() {
     </div>
   );
 }
+

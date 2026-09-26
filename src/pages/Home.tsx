@@ -39,47 +39,13 @@ import {
   Moon,
   CloudRain,
   CloudLightning,
+  Download,
 } from "lucide-react";
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useMemo } from "react";
 const PharaohAnimationBg = lazy(() => import("../components/PharaohAnimation"));
-
-// Mock Supabase client - replace with actual implementation
-const mockSupabase = {
-  from: (table: string) => ({
-    select: () => ({
-      eq: () => ({
-        order: () => ({
-          limit: () => ({
-            data: [],
-            error: null,
-          }),
-        }),
-      }),
-    }),
-  }),
-};
 
 interface HomeProps {
   onNavigate: (page: string) => void;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  tech_stack: string[];
-  featured: boolean;
-  created_at: string;
-}
-
-interface Writeup {
-  id: string;
-  title: string;
-  description: string;
-  category: string;
-  published_date: string;
-  featured: boolean;
 }
 
 // Interactive Terminal Component
@@ -771,24 +737,35 @@ const InteractiveTerminal = ({
     }
   };
 
+  const matrixDrops = useMemo(() => {
+    return Array.from({ length: 40 }).map((_, i) => ({
+      id: i,
+      left: `${(i / 40) * 100 + (Math.random() * 2 - 1)}%`,
+      top: `${Math.random() * -100}%`,
+      duration: `${Math.random() * 3 + 2}s`,
+      delay: `${Math.random() * 4}s`,
+      chars: Math.random().toString(36).substring(2, 8),
+    }));
+  }, []);
+
   const MatrixEffect = () => {
     if (!matrixMode) return null;
 
     return (
       <div className="fixed inset-0 pointer-events-none z-50">
         <div className="absolute inset-0 bg-gradient-to-b from-green-900/20 via-black/50 to-green-900/20">
-          {[...Array(40)].map((_, i) => (
+          {matrixDrops.map((drop) => (
             <div
-              key={i}
+              key={drop.id}
               className="absolute text-green-400 font-mono text-xs opacity-70"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * -100}%`,
-                animation: `fall ${Math.random() * 3 + 2}s linear infinite`,
-                animationDelay: `${Math.random() * 5}s`,
+                left: drop.left,
+                top: drop.top,
+                animation: `fall ${drop.duration} linear infinite`,
+                animationDelay: drop.delay,
               }}
             >
-              {Math.random().toString(36).substring(2, 8)}
+              {drop.chars}
             </div>
           ))}
         </div>
@@ -827,7 +804,7 @@ const InteractiveTerminal = ({
           </div>
         </div>
 
-        <div className="h-80 overflow-y-auto mb-4" ref={terminalContainerRef}>
+        <div className="h-72 sm:h-80 md:h-96 overflow-y-auto mb-4" ref={terminalContainerRef}>
           {output.map((item, index) => (
             <div key={index} className="mb-1">
               {item.text.startsWith("root@ZeroAccess") ? (
@@ -887,9 +864,13 @@ const InteractiveTerminal = ({
               value={command}
               onChange={(e) => setCommand(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent text-white outline-none ml-1 font-mono caret-yellow-600"
+              className="flex-1 bg-transparent text-white outline-none ml-1 font-mono caret-yellow-600 text-sm sm:text-base"
               autoFocus
               spellCheck={false}
+              autoCapitalize="off"
+              autoCorrect="off"
+              autoComplete="off"
+              enterKeyHint="go"
               placeholder="Type command..."
             />
           </div>
@@ -918,13 +899,9 @@ const InteractiveTerminal = ({
 };
 
 export default function Home({ onNavigate }: HomeProps) {
-  const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
-  const [featuredWriteups, setFeaturedWriteups] = useState<Writeup[]>([]);
   const [sessionTime, setSessionTime] = useState("00:00:00");
 
   useEffect(() => {
-    loadFeaturedContent();
-
     const startTime = Date.now();
     const timer = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -938,41 +915,6 @@ export default function Home({ onNavigate }: HomeProps) {
 
     return () => clearInterval(timer);
   }, []);
-
-  const loadFeaturedContent = async () => {
-    // Mock data for demonstration
-    setFeaturedProjects([
-      {
-        id: "1",
-        title: "Network Security Tool",
-        description: "Advanced packet analyzer for security assessment",
-        category: "Security",
-        tech_stack: ["Python", "Scapy", "Wireshark"],
-        featured: true,
-        created_at: new Date().toISOString(),
-      },
-      {
-        id: "2",
-        title: "Malware Analysis Lab",
-        description: "Automated malware detection and analysis system",
-        category: "Analysis",
-        tech_stack: ["Python", "YARA", "Cuckoo"],
-        featured: true,
-        created_at: new Date().toISOString(),
-      },
-    ]);
-
-    setFeaturedWriteups([
-      {
-        id: "1",
-        title: "Advanced Web Exploitation",
-        description: "Deep dive into modern web vulnerabilities",
-        category: "Web Security",
-        published_date: new Date().toISOString(),
-        featured: true,
-      },
-    ]);
-  };
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
@@ -989,7 +931,7 @@ export default function Home({ onNavigate }: HomeProps) {
             </h1>
           </div>
 
-          <div className="dashboard-reveal space-y-3 sm:space-y-4 mb-8 sm:mb-12 px-2 sm:px-0" style={{ animationDelay: '120ms' }}>
+          <div className="dashboard-reveal space-y-3 sm:space-y-4 mb-6 sm:mb-8 px-2 sm:px-0" style={{ animationDelay: '120ms' }}>
             <h2 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-wide break-words">
               SOC Engineer
             </h2>
@@ -1016,6 +958,25 @@ export default function Home({ onNavigate }: HomeProps) {
                 <span className="hidden sm:inline">SOC Engineer</span>
                 <span className="sm:hidden">SOC</span>
               </div>
+            </div>
+
+            {/* Quick Action CTA Buttons */}
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="mailto:amrKhaledv2171516@gmail.com?subject=CV%20Request&body=Hi%20Amr%2C%20I'd%20like%20to%20receive%20your%20CV."
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#D4AF37] text-[#1B2845] font-bold text-xs sm:text-sm transition-all hover:bg-[#C19A6B] hover:scale-105 shadow-lg shadow-[#D4AF37]/30"
+              >
+                <Download size={16} />
+                <span>Request CV</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => onNavigate('contact')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#D4AF37]/40 bg-[#1B2845]/70 text-[#D4AF37] font-semibold text-xs sm:text-sm transition-all hover:bg-[#D4AF37]/15 hover:border-[#D4AF37] hover:scale-105"
+              >
+                <Send size={15} />
+                <span>Get in Touch</span>
+              </button>
             </div>
           </div>
 

@@ -364,7 +364,7 @@ export default function Projects() {
     <div className="min-h-screen py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16" data-aos="fade-up">
-          <h1 className="text-5xl md:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-[#D4AF37] mb-4 flex items-center justify-center gap-4 flex-wrap">
             <span className="text-6xl">𓂀</span>
             Projects
             <span className="text-6xl">𓂀</span>
@@ -418,7 +418,7 @@ export default function Projects() {
                 <button
                   key={category.id}
                   onClick={() => setSelectedCategory(category.id)}
-                  className={`group relative px-6 py-3 rounded-lg font-semibold transition-all duration-300 overflow-hidden ${isActive ? 'bg-[#D4AF37] text-[#1B2845] scale-105 shadow-lg shadow-[#D4AF37]/50' : 'bg-[#1B2845]/50 text-gray-300 border-2 border-[#D4AF37]/20 hover:border-[#D4AF37] hover:scale-105'}`}
+                  className={`group relative px-3 sm:px-6 py-2 sm:py-3 rounded-lg text-sm font-semibold transition-all duration-300 overflow-hidden ${isActive ? 'bg-[#D4AF37] text-[#1B2845] scale-105 shadow-lg shadow-[#D4AF37]/50' : 'bg-[#1B2845]/50 text-gray-300 border-2 border-[#D4AF37]/20 hover:border-[#D4AF37] hover:scale-105'}`}
                 >
                   <div className={`absolute inset-0 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-20 transition-opacity`} />
                   <div className="relative flex items-center gap-2">
@@ -526,8 +526,8 @@ export default function Projects() {
                 <SlidersHorizontal size={17} />
                 Explore repositories
               </div>
-              <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
-                <label className="relative block">
+              <div className="grid gap-3 grid-cols-2 md:grid-cols-[minmax(0,1fr)_180px_180px_auto]">
+                <label className="relative block col-span-2 md:col-span-1">
                   <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={18} />
                   <input
                     type="search"

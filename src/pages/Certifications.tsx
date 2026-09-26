@@ -475,10 +475,15 @@ export default function Certifications() {
                               src={getDriveImageUrl(cert.id)}
                               alt={cert.name}
                               loading="lazy"
+                              referrerPolicy="no-referrer"
                               className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.07]"
                               onError={(e) => {
                                 const img = e.currentTarget;
-                                if (img.src !== cert.imageUrl) img.src = cert.imageUrl;
+                                if (img.src !== cert.imageUrl) {
+                                  img.src = cert.imageUrl;
+                                } else {
+                                  img.src = `https://lh3.googleusercontent.com/d/${cert.id}=w800`;
+                                }
                               }}
                             />
 
@@ -519,7 +524,8 @@ export default function Certifications() {
                       type="button"
                       onClick={() => setDrivePage(p => Math.max(1, p - 1))}
                       disabled={drivePage === 1}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
+                      aria-label="Previous page"
+                      className="flex h-9 w-9 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       ‹
                     </button>
@@ -528,7 +534,9 @@ export default function Certifications() {
                         key={page}
                         type="button"
                         onClick={() => setDrivePage(page)}
-                        className={`flex h-8 w-8 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
+                        aria-label={`Go to page ${page}`}
+                        aria-current={page === drivePage ? 'page' : undefined}
+                        className={`flex h-9 w-9 sm:h-8 sm:w-8 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
                           page === drivePage
                             ? 'bg-[#D4AF37] text-[#1B2845] shadow-md shadow-[#D4AF37]/30'
                             : 'text-gray-400 hover:bg-[#D4AF37]/10 hover:text-[#D4AF37]'
@@ -541,7 +549,8 @@ export default function Certifications() {
                       type="button"
                       onClick={() => setDrivePage(p => Math.min(drivePageCount, p + 1))}
                       disabled={drivePage === drivePageCount}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
+                      aria-label="Next page"
+                      className="flex h-9 w-9 sm:h-8 sm:w-8 items-center justify-center rounded-lg border border-[#D4AF37]/20 text-base text-[#D4AF37] transition-colors hover:bg-[#D4AF37]/10 disabled:cursor-not-allowed disabled:opacity-30"
                     >
                       ›
                     </button>
@@ -553,13 +562,13 @@ export default function Certifications() {
         ) : (
           <>
         {/* Filter Buttons */}
-        <div className="mb-10 sm:mb-12">
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
+        <div className="mb-8 sm:mb-12">
+          <div className="flex overflow-x-auto pb-2 sm:pb-0 sm:flex-wrap justify-start sm:justify-center gap-2 sm:gap-3 no-scrollbar">
             {issuers.map((issuer) => (
               <button
                 key={issuer}
                 onClick={() => setFilter(issuer)}
-                className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium transition-all text-xs sm:text-sm ${
+                className={`shrink-0 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium transition-all text-xs sm:text-sm whitespace-nowrap ${
                   filter === issuer
                     ? 'bg-[#D4AF37] text-[#1B2845] shadow-lg shadow-[#D4AF37]/30'
                     : 'bg-[#1B2845]/70 text-gray-300 hover:bg-[#1B2845] hover:text-[#D4AF37] border border-[#D4AF37]/20'

@@ -93,7 +93,7 @@ export default function Navigation({ currentPage = 'home', onNavigate }: Navigat
           </div>
           <div className="leading-tight">
             <h1 className="text-xs sm:text-sm font-extrabold tracking-wider text-white group-hover:text-[#D4AF37] transition-colors">
-              AMR ELDHSHAN
+              AMR KHALED ELDHSHAN
             </h1>
             <p className="text-[10px] text-gray-400 font-mono tracking-widest flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />

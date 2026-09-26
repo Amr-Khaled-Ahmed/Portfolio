@@ -35,7 +35,7 @@ export default function Layout({
 
       <Navigation currentPage={currentPage} onNavigate={onNavigate} />
 
-      <main key={currentPage} className="page-enter relative z-10">{children}</main>
+      <main key={currentPage} className="page-enter relative z-10 pt-14 sm:pt-16">{children}</main>
 
       <footer className="relative z-10 border-t border-[#D4AF37]/20 bg-[#0a0e1a]/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

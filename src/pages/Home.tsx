@@ -925,9 +925,9 @@ export default function Home({ onNavigate }: HomeProps) {
         </Suspense>
         {/* Content Overlay */}
         <div className="relative z-10 mx-auto w-full max-w-6xl text-center">
-          <div className="dashboard-reveal mb-4 sm:mb-8">
-            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-yellow-600 tracking-wider mb-2 sm:mb-4 break-words">
-              Amr Eldhshan
+          <div className="dashboard-reveal pt-16 sm:pt-20 md:pt-24 mb-4 sm:mb-8">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-yellow-600 tracking-wider mb-2 sm:mb-4 break-words">
+              Amr Khaled Eldhshan
             </h1>
           </div>
 

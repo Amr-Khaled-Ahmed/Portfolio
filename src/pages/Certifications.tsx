@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Award, Calendar, Building2, X, ChevronLeft, ChevronRight, Search, ExternalLink } from 'lucide-react';
+import { Calendar, Building2, X, ChevronLeft, ChevronRight, Search, ExternalLink } from 'lucide-react';
 
 interface Certificate {
   id: number;
@@ -332,11 +332,11 @@ export default function Certifications() {
           <p className="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mx-auto px-2">
             A collection of my professional certifications and achievements in cybersecurity, networking, and development
           </p>
-          <div className="mt-4 flex items-center justify-center gap-3 text-[#D4AF37] flex-wrap">
+          {/* <div className="mt-4 flex items-center justify-center gap-3 text-[#D4AF37] flex-wrap">
             <Award size={24} />
-            <span className="text-xl sm:text-2xl font-bold">{certificates.length}</span>
+            <span className="text-xl sm:text-2xl font-bold">{driveLoading ? '…' : driveCertificates.length}</span>
             <span className="text-sm sm:text-base text-gray-400">Total Certifications</span>
-          </div>
+          </div> */}
         </div>
 
         {/* Local certificate views */}

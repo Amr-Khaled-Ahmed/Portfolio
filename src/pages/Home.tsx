@@ -1,47 +1,20 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   Shield,
+  Home as HouseIcon,
   Terminal,
   Bug,
   Gamepad2,
   Trophy,
-  Cpu,
-  Send,
-  Key,
-  Eye,
-  EyeOff,
-  Sparkles,
-  Brain,
-  Skull,
-  Fingerprint,
-  AlertTriangle,
-  Clock,
-  Hash,
-  LockKeyhole,
-  Search,
-  FileCode,
-  FolderOpen,
-  HardDrive,
-  Network,
   Globe,
-  Users,
-  Bell,
-  Volume2,
-  Settings,
-  Power,
-  RefreshCw,
-  Play,
-  StopCircle,
-  Camera,
-  Battery,
-  Cloud,
-  Sun,
-  Moon,
-  CloudRain,
-  CloudLightning,
+  Send,
+  Brain,
+  Clock,
+  FileCode,
   Download,
 } from "lucide-react";
 import { lazy, Suspense, useMemo } from "react";
+import PortfolioHouse from "../components/PortfolioHouse";
 const PharaohAnimationBg = lazy(() => import("../components/PharaohAnimation"));
 
 interface HomeProps {
@@ -494,7 +467,7 @@ const InteractiveTerminal = ({
         setOutput(newOutput);
         break;
 
-      case "ctf":
+      case "ctf": {
         const encryptedFlag = "Wvwe{p9vwlmz_qa_u9u1v5}";
         newOutput.push({
           text: "╔════════════════════════════════════╗",
@@ -526,6 +499,7 @@ const InteractiveTerminal = ({
         newOutput.push({ text: "", type: "system" });
         setOutput(newOutput);
         break;
+      }
 
       case "hint":
         newOutput.push({
@@ -566,7 +540,7 @@ const InteractiveTerminal = ({
         ]);
         break;
 
-      case "date":
+      case "date": {
         const now = new Date();
         newOutput.push({
           text: `📅 ${now.toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}`,
@@ -579,6 +553,7 @@ const InteractiveTerminal = ({
         newOutput.push({ text: "", type: "system" });
         setOutput(newOutput);
         break;
+      }
 
       default:
         if (trimmedCmd.toLowerCase().startsWith("submit ")) {
@@ -900,6 +875,7 @@ const InteractiveTerminal = ({
 
 export default function Home({ onNavigate }: HomeProps) {
   const [sessionTime, setSessionTime] = useState("00:00:00");
+  const [activeView, setActiveView] = useState<'terminal' | 'house'>('terminal');
 
   useEffect(() => {
     const startTime = Date.now();
@@ -950,7 +926,7 @@ export default function Home({ onNavigate }: HomeProps) {
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
                 <Shield className="text-yellow-600 flex-shrink-0" size={16} />
-                <span className="hidden sm:inline">CTF Creator</span>
+                <span className="hidden sm:inline">CTF Competitor</span>
                 <span className="sm:hidden">CTF</span>
               </div>
               <div className="flex items-center gap-1 sm:gap-2">
@@ -988,13 +964,13 @@ export default function Home({ onNavigate }: HomeProps) {
               </div>
             </div>
             <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
-              <div className="text-xs text-gray-400 mb-1">Commands</div>
+              <div className="text-xs text-gray-400 mb-1">Rooms</div>
               <div className="text-sm sm:text-xl text-yellow-600 font-mono">
-                20+
+                6
               </div>
             </div>
             <div className="dashboard-stat bg-slate-800/70 backdrop-blur-sm border border-yellow-600/20 rounded-lg p-2 sm:p-3 text-center text-xs sm:text-sm">
-              <div className="text-xs text-gray-400 mb-1">Files</div>
+              <div className="text-xs text-gray-400 mb-1">Archive Doors</div>
               <div className="text-sm sm:text-xl text-yellow-600 font-mono">
                 5
               </div>
@@ -1010,76 +986,65 @@ export default function Home({ onNavigate }: HomeProps) {
             </div>
           </div>
 
-          <div className="dashboard-reveal mb-8 sm:mb-16 max-w-4xl mx-auto px-2 sm:px-4" style={{ animationDelay: '340ms' }}>
-            <div className="text-center mb-4 sm:mb-6">
-              <h3 className="text-lg sm:text-2xl font-bold text-yellow-600 mb-2 flex items-center justify-center gap-2 flex-wrap">
-                <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
-                <span>ZeroAccess Terminal v2.3.1</span>
-                <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-400 mb-4 px-2">
-                Your gateway to the digital realm. Type commands, solve
-                challenges, explore secrets.
-              </p>
+          <div className="dashboard-reveal mb-8 sm:mb-16 max-w-6xl mx-auto px-2 sm:px-4" style={{ animationDelay: '340ms' }}>
+            <div className="mb-4 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setActiveView((view) => view === 'terminal' ? 'house' : 'terminal')}
+                className="inline-flex items-center gap-2 border border-[#D4AF37]/50 bg-[#13282d] px-4 py-2.5 text-sm font-semibold text-[#E7CD8B] transition-colors hover:border-[#D4AF37] hover:bg-[#1B3539]"
+              >
+                {activeView === 'terminal' ? <><HouseIcon size={16} /> Enter the house</> : <><Terminal size={16} /> Return to terminal</>}
+              </button>
             </div>
 
-            <div className="terminal-scanline rounded-xl">
-              <InteractiveTerminal onNavigate={onNavigate} />
-            </div>
+            {activeView === 'terminal' ? (
+              <>
+                <div className="text-center mb-4 sm:mb-6">
+                  <h3 className="text-lg sm:text-2xl font-bold text-yellow-600 mb-2 flex items-center justify-center gap-2 flex-wrap">
+                    <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
+                    <span>ZeroAccess Terminal v2.3.1</span>
+                    <Terminal className="text-yellow-600 flex-shrink-0" size={20} />
+                  </h3>
+                  <p className="text-xs sm:text-sm text-gray-400 mb-4 px-2">
+                    Your gateway to the digital realm. Type commands, solve challenges, explore secrets.
+                  </p>
+                </div>
 
-            <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-              <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Trophy className="text-yellow-600 flex-shrink-0" size={18} />
-                  <h4 className="text-sm sm:text-lg font-bold text-white">
-                    CTF Challenge
-                  </h4>
+                <div className="terminal-scanline rounded-xl">
+                  <InteractiveTerminal onNavigate={onNavigate} />
                 </div>
-                <p className="text-gray-300 text-xs sm:text-sm mb-2">
-                  Decode the transformation. Discover the cipher!
-                </p>
-                <div className="text-xs text-gray-400 space-y-1">
-                  <div>
-                    <span className="text-yellow-600">●</span> Type "ctf" for
-                    the challenge
-                  </div>
-                  <div>
-                    <span className="text-yellow-600">●</span> Type "hint" for a
-                    clue
-                  </div>
-                  <div>
-                    <span className="text-yellow-600">●</span> Type "submit
-                    [flag]" to check
-                  </div>
-                </div>
-              </div>
 
-              <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
-                <div className="flex items-center gap-2 mb-2">
-                  <Globe className="text-yellow-600 flex-shrink-0" size={18} />
-                  <h4 className="text-sm sm:text-lg font-bold text-white">
-                    Navigation
-                  </h4>
+                <div className="mt-4 sm:mt-6 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Trophy className="text-yellow-600 flex-shrink-0" size={18} />
+                      <h4 className="text-sm sm:text-lg font-bold text-white">CTF Challenge</h4>
+                    </div>
+                    <p className="text-gray-300 text-xs sm:text-sm mb-2">Decode the transformation. Discover the cipher!</p>
+                    <div className="text-xs text-gray-400 space-y-1">
+                      <div><span className="text-yellow-600">●</span> Type "ctf" for the challenge</div>
+                      <div><span className="text-yellow-600">●</span> Type "hint" for a clue</div>
+                      <div><span className="text-yellow-600">●</span> Type "submit [flag]" to check</div>
+                    </div>
+                  </div>
+
+                  <div className="p-3 sm:p-4 bg-slate-800/70 backdrop-blur-sm border border-yellow-600/30 rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="text-yellow-600 flex-shrink-0" size={18} />
+                      <h4 className="text-sm sm:text-lg font-bold text-white">Navigation</h4>
+                    </div>
+                    <p className="text-gray-300 text-xs sm:text-sm mb-2">Click .npz files or use "cat" commands to explore.</p>
+                    <div className="text-xs text-gray-400 space-y-1">
+                      <div><span className="text-yellow-600">●</span> Click encrypted files to navigate</div>
+                      <div><span className="text-yellow-600">●</span> Type "cat [file]" for direct access</div>
+                      <div><span className="text-yellow-600">●</span> Type "help" for all commands</div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-gray-300 text-xs sm:text-sm mb-2">
-                  Click .npz files or use "cat" commands to explore.
-                </p>
-                <div className="text-xs text-gray-400 space-y-1">
-                  <div>
-                    <span className="text-yellow-600">●</span> Click encrypted
-                    files to navigate
-                  </div>
-                  <div>
-                    <span className="text-yellow-600">●</span> Type "cat [file]"
-                    for direct access
-                  </div>
-                  <div>
-                    <span className="text-yellow-600">●</span> Type "help" for
-                    all commands
-                  </div>
-                </div>
-              </div>
-            </div>
+              </>
+            ) : (
+              <PortfolioHouse onNavigate={onNavigate} />
+            )}
           </div>
         </div>
       </section>

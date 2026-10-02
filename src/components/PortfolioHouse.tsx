@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Award,
   ArrowDown,
@@ -18,6 +18,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import './PortfolioHouse.css';
+import { skillGroups } from '../data/skills';
 
 type RoomId = 'profile' | 'skills' | 'certifications' | 'projects' | 'writeups' | 'ctf' | 'contact';
 type Point = { x: number; y: number };
@@ -36,18 +37,6 @@ interface HouseRoom {
   destination?: string;
   furnishings?: Furnishing[];
 }
-
-const skillGroups = [
-  { name: 'SOC & Security Monitoring', details: 'Phishing email analysis, SIEM fundamentals, threat intelligence, digital forensics basics, endpoint and network security monitoring. Tools: Wireshark, tcpdump, Snort.' },
-  { name: 'Malware Analysis & Reverse Engineering', details: 'Static and dynamic analysis, anti-analysis and debugging bypass, deobfuscation. Tools: IDA Pro, Ghidra, x64dbg, dnSpy, JADX, Sysinternals Suite, PEStudio, DIE, FakeNet-NG.' },
-  { name: 'Penetration Testing', details: 'Vulnerability scanning, exploitation, web application testing. Tools: Kali Linux, Burp Suite, Metasploit, Nessus, Acunetix.' },
-  { name: 'Reconnaissance & OSINT', details: 'Information gathering and asset discovery. Tools: OSINT Framework, Nmap, Amass, Shodan, Recon-ng, theHarvester.' },
-  { name: 'Network Security & Firewalls', details: 'Security policy design, threat protection, system hardening, IPsec and SSL VPNs. Tools: FortiGate 7.6, FortiManager, IDS/IPS.' },
-  { name: 'Networking Infrastructure', details: 'Routing, switching, OSPF, EIGRP, NAT, VLANs, STP, QoS and TCP/IP. CCNA-level networking; Wireshark.' },
-  { name: 'Forensics & Detection', details: 'Memory forensics (CTF), custom YARA rules and traffic analysis.' },
-  { name: 'Core Systems & Automation', details: 'Windows and Windows Server, Linux (RHEL and Debian), x86 Assembly, ARM, PowerShell, Bash, Batch, Git and GitHub.' },
-  { name: 'Programming & Scripting', details: 'C, C++, Python, Java, JavaScript, HTML, SQL, x86 Assembly, ARM, PowerShell, Bash, Batch and Git.' },
-];
 
 const educationItems = [
   {
@@ -204,7 +193,20 @@ export default function PortfolioHouse({ onNavigate }: { onNavigate: (page: stri
   const [ctfSolved, setCtfSolved] = useState(false);
   const [skillsTab, setSkillsTab] = useState<SkillsTab>('skills');
   const [walking, setWalking] = useState(false);
+  const snowEnabled = true;
   const walkTimer = useRef<number | null>(null);
+  const snowFlakes = useMemo(
+    () => Array.from({ length: 28 }, (_, index) => ({
+      id: index,
+      left: `${(index * 11.7 + 5) % 100}%`,
+      size: `${index % 3 === 0 ? 4 : index % 3 === 1 ? 5 : 6}px`,
+      duration: `${7 + (index % 7)}s`,
+      delay: `${(index % 9) * 0.6}s`,
+      opacity: 0.25 + ((index * 13) % 60) / 100,
+      drift: `${-16 + ((index * 13) % 32)}px`,
+    })),
+    [],
+  );
 
   const move = useCallback((dx: number, dy: number) => {
     if (activeRoomRef.current) return;
@@ -299,6 +301,25 @@ export default function PortfolioHouse({ onNavigate }: { onNavigate: (page: stri
       </div>
 
       <div className="house-stage" aria-label="Top-down house with six rooms">
+        {snowEnabled && (
+          <div className="snow-layer" aria-hidden="true">
+            {snowFlakes.map((flake) => (
+              <span
+                key={flake.id}
+                className="snow-flake"
+                style={{
+                  left: flake.left,
+                  width: flake.size,
+                  height: flake.size,
+                  animationDuration: flake.duration,
+                  animationDelay: flake.delay,
+                  opacity: flake.opacity,
+                  ['--snow-drift' as string]: flake.drift,
+                }}
+              />
+            ))}
+          </div>
+        )}
         <div className="house-wall house-wall-top" />
         <div className="house-wall house-wall-bottom" />
         <div className="egyptian-frieze" aria-hidden="true">𓂀 | 𓋹 | 𓆣 | 𓇳 | 𓏛 | 𓆸 | 𓂀</div>

@@ -13,8 +13,9 @@ import {
   FileCode,
   Download,
 } from "lucide-react";
-import { lazy, Suspense, useMemo } from "react";
+import { lazy, Suspense } from "react";
 import PortfolioHouse from "../components/PortfolioHouse";
+import { skillGroups } from "../data/skills";
 const PharaohAnimationBg = lazy(() => import("../components/PharaohAnimation"));
 
 interface HomeProps {
@@ -43,24 +44,10 @@ const InteractiveTerminal = ({
         | "system";
       hidden?: boolean;
     }[]
-  >([
-    // {text: '', type: 'system'},
-    // {text: '█▓▒░ ZeroAccess TERMINAL v2.3.1 ░▒▓█', type: 'success'},
-    // {text: '● System: ZeroAccessOS 11.0 (Kernel 5.19.0-pwn)', type: 'system'},
-    // {text: '● Shell: ZeroAccess Z-Shell 7.2', type: 'system'},
-    // {text: '● Uptime: 47d 12h 33m', type: 'system'},
-    // {text: '● Security: Maximum (Hacker Mode)', type: 'warning'},
-    // {text: '', type: 'system'},
-    // {text: '█▓▒░ INITIALIZING... ░▒▓█', type: 'system'},
-    // {text: '✓ Loading security modules... [OK]', type: 'success'},
-    // {text: '✓ Establishing encrypted tunnel... [SECURE]', type: 'success'},
-    // {text: '✓ Bypassing firewalls... [PWNED]', type: 'ctf'},
-    // {text: '✓ Root privileges acquired... [MAXIMUM]', type: 'warning'},
-    // {text: '', type: 'system'},
-    // {text: '█▓▒░ WELCOME TO THE MATRIX ░▒▓█', type: 'secret'},
-    // {text: '', type: 'system'},
-    // {text: 'Type "help" for commands • Type "matrix" for visual mode • Type "ctf" for challenge', type: 'info'},
-    // {text: '', type: 'system'},
+    >([
+    { text: "ZeroAccess portfolio shell", type: "success" },
+    { text: 'Type "help" to see commands, or try "ls" to explore.', type: "info" },
+    { text: "", type: "system" },
   ]);
 
   const [history, setHistory] = useState<string[]>([]);
@@ -68,7 +55,6 @@ const InteractiveTerminal = ({
   const [ctfSolved, setCtfSolved] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const [systemTime, setSystemTime] = useState("");
-  const [matrixMode, setMatrixMode] = useState(false);
   const [heartbeat, setHeartbeat] = useState(false);
   const terminalEndRef = useRef<HTMLDivElement>(null);
   const terminalContainerRef = useRef<HTMLDivElement>(null);
@@ -116,47 +102,24 @@ const InteractiveTerminal = ({
     sysinfo: " - Display system information",
     neofetch: " - Display system info with style",
     "cat certifications": " - View certifications",
-    "cat skills": " - View skills",
+    "cat skills": " - List skills from my CV",
     "cat writeups": " - View writeups",
     "cat projects": " - View projects",
     "cat contact": " - View contact info",
     ctf: " - Show Pharaoh's Challenge",
     hint: " - Get a mysterious clue",
     submit: " [flag] - Submit your answer",
-    matrix: " - Enable visual mode",
-    pulse: " - Start heartbeat monitor",
+    pulse: " - Toggle the terminal heartbeat indicator",
     echo: " [text] - Echo with special effects",
     scan: " - Scan system for vulnerabilities",
     decrypt: " - Try to decrypt something",
     pharaoh: " - Show pharaoh wisdom",
     hackermode: " - Activate hacker mode (hidden)",
   };
+  const quickCommands = ["help", "ls", "whoami", "ctf"];
 
   const handleFileClick = (file: string) => {
-    const pageMap: Record<string, string> = {
-      "certifications.npz": "certifications",
-      "skills.npz": "certifications",
-      "writeups.npz": "writeups",
-      "projects.npz": "projects",
-      "contact.npz": "contact",
-    };
-
-    const page = pageMap[file];
-    if (page) {
-      const newOutput = [
-        ...output,
-        { text: `root@ZeroAccess:~$ cat ${file}`, type: "command" as const },
-        { text: `Decrypting ${file}...`, type: "info" as const },
-        { text: "Accessing secure data...", type: "info" as const },
-        {
-          text: `Redirecting to ${file.replace(".npz", "")}...`,
-          type: "success" as const,
-        },
-        { text: "", type: "system" as const },
-      ];
-      setOutput(newOutput);
-      setTimeout(() => onNavigate(page), 1000);
-    }
+    handleCommand(`cat ${file}`);
   };
 
   const checkFlag = (submittedFlag: string): boolean => {
@@ -168,12 +131,13 @@ const InteractiveTerminal = ({
 
   const handleCommand = (cmd: string) => {
     const trimmedCmd = cmd.trim();
+    const normalizedCmd = trimmedCmd.toLowerCase();
     const newOutput = [
       ...output,
       { text: `root@ZeroAccess:~$ ${cmd}`, type: "command" as const },
     ];
 
-    switch (trimmedCmd.toLowerCase()) {
+    switch (normalizedCmd) {
       case "":
         setOutput([...newOutput, { text: "", type: "system" as const }]);
         break;
@@ -263,37 +227,7 @@ const InteractiveTerminal = ({
         break;
 
       case "whoami":
-        newOutput.push({
-          text: "╔════════════════════════════════════╗",
-          type: "system",
-        });
-        newOutput.push({
-          text: "║        USER IDENTITY               ║",
-          type: "system",
-        });
-        newOutput.push({
-          text: "╚════════════════════════════════════╝",
-          type: "system",
-        });
-        newOutput.push({ text: "", type: "system" });
-        newOutput.push({ text: "👤 Username: ZeroAccess", type: "output" });
-        newOutput.push({
-          text: "🏆 Title: Egyptian Cyber Warrior",
-          type: "output",
-        });
-        newOutput.push({
-          text: "🎯 Specialty: Offensive Security",
-          type: "output",
-        });
-        newOutput.push({ text: "📍 Location: Digital Egypt", type: "output" });
-        newOutput.push({
-          text: "⚡ Status: Root Access Active",
-          type: "success",
-        });
-        newOutput.push({
-          text: "🛡️  Security Level: MAXIMUM",
-          type: "warning",
-        });
+        newOutput.push({ text: "Amr Khaled Eldhshan", type: "output" });
         newOutput.push({ text: "", type: "system" });
         setOutput(newOutput);
         break;
@@ -365,18 +299,6 @@ const InteractiveTerminal = ({
         newOutput.push({
           text: "       Memory: 62474MiB / 64240MiB",
           type: "output",
-        });
-        newOutput.push({ text: "", type: "system" });
-        setOutput(newOutput);
-        break;
-
-      case "matrix":
-        setMatrixMode(!matrixMode);
-        newOutput.push({
-          text: matrixMode
-            ? "Exiting digital reality..."
-            : "ENTERING THE MATRIX...",
-          type: matrixMode ? "info" : "warning",
         });
         newOutput.push({ text: "", type: "system" });
         setOutput(newOutput);
@@ -468,7 +390,7 @@ const InteractiveTerminal = ({
         break;
 
       case "ctf": {
-        const encryptedFlag = "Wvwe{p9vwlmz_qa_u9u1v5}";
+        const encryptedFlag = "Wrsa{a1rxiv_mw_g0q1r9}";
         newOutput.push({
           text: "╔════════════════════════════════════╗",
           type: "system",
@@ -524,7 +446,7 @@ const InteractiveTerminal = ({
           type: "output",
         });
         newOutput.push({
-          text: "A simple shift, a subtle slide,",
+          text: "A simple shift, four steps back,",
           type: "output",
         });
         newOutput.push({ text: "", type: "system" });
@@ -558,7 +480,8 @@ const InteractiveTerminal = ({
       default:
         if (trimmedCmd.toLowerCase().startsWith("submit ")) {
           const submittedFlag = trimmedCmd.substring(7);
-          setAttempts((prev) => prev + 1);
+          const nextAttempts = attempts + 1;
+          setAttempts(nextAttempts);
 
           if (checkFlag(submittedFlag)) {
             newOutput.push({
@@ -591,7 +514,7 @@ const InteractiveTerminal = ({
             setCtfSolved(true);
           } else {
             newOutput.push({ text: "❌ INCORRECT SUBMISSION", type: "error" });
-            newOutput.push({ text: `📊 Attempts: ${attempts}`, type: "info" });
+            newOutput.push({ text: `📊 Attempts: ${nextAttempts}`, type: "info" });
             newOutput.push({
               text: "💡 The letters have shifted positions...",
               type: "warning",
@@ -607,6 +530,7 @@ const InteractiveTerminal = ({
           setOutput(newOutput);
         } else if (trimmedCmd.toLowerCase().startsWith("cat ")) {
           const file = trimmedCmd.substring(4);
+          const normalizedFile = file.trim().replace(/\.npz$/i, "").toLowerCase();
           const validFiles = [
             "certifications",
             "skills",
@@ -614,19 +538,26 @@ const InteractiveTerminal = ({
             "projects",
             "contact",
           ];
-
-          if (validFiles.includes(file)) {
-            newOutput.push({ text: `Decrypting ${file}.npz...`, type: "info" });
+          if (normalizedFile === "skills") {
+            newOutput.push({ text: "SKILLS & ABILITIES", type: "success" });
+            skillGroups.forEach(({ name, details }) => {
+              newOutput.push({ text: `${name}:`, type: "ctf" });
+              newOutput.push({ text: `  ${details}`, type: "output" });
+            });
+            newOutput.push({ text: "", type: "system" });
+            setOutput(newOutput);
+          } else if (validFiles.includes(normalizedFile)) {
+            newOutput.push({ text: `Decrypting ${normalizedFile}.npz...`, type: "info" });
             newOutput.push({ text: "Redirecting...", type: "success" });
             newOutput.push({ text: "", type: "system" });
             setOutput(newOutput);
             setTimeout(
-              () => onNavigate(file === "skills" ? "certifications" : file),
+              () => onNavigate(normalizedFile),
               800,
             );
           } else {
             newOutput.push({
-              text: `cat: ${file}: No such file or directory`,
+              text: `cat: ${normalizedFile}: No such file or directory`,
               type: "error",
             });
             newOutput.push({ text: "", type: "system" });
@@ -646,7 +577,7 @@ const InteractiveTerminal = ({
         }
     }
 
-    if (trimmedCmd && trimmedCmd.toLowerCase() !== "clear") {
+    if (trimmedCmd && normalizedCmd !== "clear") {
       setHistory((prev) => [...prev, cmd]);
       setHistoryIndex(-1);
     }
@@ -712,62 +643,13 @@ const InteractiveTerminal = ({
     }
   };
 
-  const matrixDrops = useMemo(() => {
-    return Array.from({ length: 40 }).map((_, i) => ({
-      id: i,
-      left: `${(i / 40) * 100 + (Math.random() * 2 - 1)}%`,
-      top: `${Math.random() * -100}%`,
-      duration: `${Math.random() * 3 + 2}s`,
-      delay: `${Math.random() * 4}s`,
-      chars: Math.random().toString(36).substring(2, 8),
-    }));
-  }, []);
-
-  const MatrixEffect = () => {
-    if (!matrixMode) return null;
-
-    return (
-      <div className="fixed inset-0 pointer-events-none z-50">
-        <div className="absolute inset-0 bg-gradient-to-b from-green-900/20 via-black/50 to-green-900/20">
-          {matrixDrops.map((drop) => (
-            <div
-              key={drop.id}
-              className="absolute text-green-400 font-mono text-xs opacity-70"
-              style={{
-                left: drop.left,
-                top: drop.top,
-                animation: `fall ${drop.duration} linear infinite`,
-                animationDelay: drop.delay,
-              }}
-            >
-              {drop.chars}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <>
-      <MatrixEffect />
-      <style>{`
-        @keyframes fall {
-          to { transform: translateY(100vh); }
-        }
-      `}</style>
-
-      <div
-        className={`bg-slate-900/95 backdrop-blur-sm border-2 ${matrixMode ? "border-green-500/50" : "border-yellow-600/30"} rounded-xl p-4 font-mono shadow-2xl transition-all duration-300`}
-      >
+      <div className="bg-slate-900/95 backdrop-blur-sm border border-yellow-600/30 rounded-xl p-4 font-mono text-left shadow-2xl">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div
-              className="w-3 h-3 rounded-full bg-green-500 cursor-pointer"
-              onClick={() => setMatrixMode(!matrixMode)}
-            ></div>
+            <div className={`w-3 h-3 rounded-full ${heartbeat ? "bg-green-400 status-pulse" : "bg-green-500"}`}></div>
             <span className="text-gray-400 ml-2 text-sm">
               root@ZeroAccess:~$
             </span>
@@ -775,7 +657,7 @@ const InteractiveTerminal = ({
           <div className="flex items-center gap-3 text-xs text-gray-500">
             <Clock size={12} />
             <span>{systemTime}</span>
-            {matrixMode && <span className="text-green-400">MATRIX</span>}
+            {heartbeat && <span className="text-green-400">PULSE</span>}
           </div>
         </div>
 
@@ -794,28 +676,15 @@ const InteractiveTerminal = ({
                     {item.text.substring(18)}
                   </span>
                 </div>
-              ) : item.text.includes(".npz") && !item.text.includes("cat ") ? (
-                <div className="flex flex-wrap gap-2">
-                  {item.text.split("  ").map((file, idx) => {
-                    const cleanFile = file
-                      .trim()
-                      .replace("[ENCRYPTED]", "")
-                      .trim();
-                    if (!cleanFile || cleanFile === "📂 PORTFOLIO/")
-                      return null;
-                    return (
-                      <button
-                        key={idx}
-                        onClick={() => handleFileClick(cleanFile)}
-                        className="px-2 py-1 bg-yellow-600/10 hover:bg-yellow-600/20 text-yellow-600 rounded border border-yellow-600/30 hover:border-yellow-600 transition-all text-sm font-medium hover:scale-105 flex items-center gap-1"
-                      >
-                        <FileCode size={12} />
-                        {cleanFile}
-                        <span className="text-xs text-yellow-500">[ENC]</span>
-                      </button>
-                    );
-                  })}
-                </div>
+              ) : /[\w-]+\.npz/i.test(item.text) ? (
+                <button
+                  onClick={() => handleFileClick(item.text.match(/[\w-]+\.npz/i)?.[0] ?? "")}
+                  className="inline-flex items-center gap-2 border border-yellow-600/30 bg-yellow-600/10 px-2 py-1 text-sm text-yellow-500 transition-colors hover:border-yellow-500 hover:bg-yellow-600/20"
+                >
+                  <FileCode size={12} />
+                  {item.text.match(/[\w-]+\.npz/i)?.[0]}
+                  <span className="text-xs text-yellow-600">[open]</span>
+                </button>
               ) : (
                 <div
                   className={`${getOutputColor(item.type)} ${item.type === "success" || item.type === "ctf" ? "font-bold" : ""} break-all`}
@@ -850,6 +719,18 @@ const InteractiveTerminal = ({
             />
           </div>
         </div>
+        <div className="flex flex-wrap items-center gap-2 border-b border-yellow-600/20 pb-3 mb-3">
+          {quickCommands.map((quickCommand) => (
+            <button
+              key={quickCommand}
+              type="button"
+              onClick={() => handleCommand(quickCommand)}
+              className="border border-yellow-600/25 px-2.5 py-1 text-xs text-gray-300 transition-colors hover:border-yellow-500 hover:text-yellow-400"
+            >
+              {quickCommand}
+            </button>
+          ))}
+        </div>
 
         <div className="text-xs text-gray-500 border-t border-yellow-600/20 pt-2 flex justify-between items-center">
           <div className="flex items-center gap-4">
@@ -859,7 +740,7 @@ const InteractiveTerminal = ({
             </div>
             <div className="flex items-center gap-1">
               <Brain size={10} />
-              <span>Commands: {Object.keys(terminalCommands).length}</span>
+              <span>{Object.keys(terminalCommands).length} commands</span>
             </div>
           </div>
           <div className="text-gray-600">
@@ -869,7 +750,6 @@ const InteractiveTerminal = ({
           </div>
         </div>
       </div>
-    </>
   );
 };
 
@@ -899,6 +779,7 @@ export default function Home({ onNavigate }: HomeProps) {
         <Suspense fallback={null}>
           <PharaohAnimationBg />
         </Suspense>
+
         {/* Content Overlay */}
         <div className="relative z-10 mx-auto w-full max-w-6xl text-center">
           <div className="dashboard-reveal pt-16 sm:pt-20 md:pt-24 mb-4 sm:mb-8">

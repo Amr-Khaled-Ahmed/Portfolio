@@ -1,12 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
-import { Shield, Scroll, Award, Mail, Home, X, ChevronRight, Download, BookOpen, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { Shield, Scroll, Award, Mail, Home, X, ChevronRight, Download, BookOpen, Github, Linkedin, ExternalLink, Snowflake } from 'lucide-react';
 
 interface NavigationProps {
   currentPage?: string;
   onNavigate?: (page: string) => void;
+  snowEnabled: boolean;
+  onSnowToggle: () => void;
 }
 
-export default function Navigation({ currentPage = 'home', onNavigate }: NavigationProps) {
+export default function Navigation({ currentPage = 'home', onNavigate, snowEnabled, onSnowToggle }: NavigationProps) {
   const [isOpen, setIsOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -228,6 +230,28 @@ export default function Navigation({ currentPage = 'home', onNavigate }: Navigat
 
         {/* ── Cartouche Footer & Socials ── */}
         <div className="p-5 border-t border-[#D4AF37]/20 bg-[#0a0e1c]/80">
+          <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-4">
+            <div className="flex items-center gap-2.5 text-sm text-gray-200">
+              <Snowflake size={16} className="text-cyan-200" />
+              <span id="snowfall-label">Winter effects</span>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-labelledby="snowfall-label"
+              aria-checked={snowEnabled}
+              onClick={onSnowToggle}
+              className={`relative h-6 w-11 rounded-full border transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0e1c] ${
+                snowEnabled ? 'border-cyan-200/70 bg-cyan-200/30' : 'border-gray-500 bg-gray-700/70'
+              }`}
+            >
+              <span
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  snowEnabled ? 'left-[22px]' : 'left-0.5'
+                }`}
+              />
+            </button>
+          </div>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <a

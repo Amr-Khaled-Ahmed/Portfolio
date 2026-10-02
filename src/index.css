@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+.winter-background-phrase {
+  position: fixed;
+  top: 1.15rem;
+  left: 50%;
+  z-index: 11;
+  color: rgba(224, 237, 242, 0.16);
+  font: 700 1.5rem/1.2 Georgia, 'Times New Roman', serif;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 14px rgba(190, 225, 239, 0.12), 0 2px 8px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 767px) {
+  .winter-background-phrase {
+    font-size: 1.1rem;
+  }
+}
+
 @layer utilities {
   .hieroglyph-text {
     text-shadow: 0 0 20px rgba(212, 175, 55, 0.5),

@@ -1,4 +1,5 @@
-import { ReactNode, lazy, Suspense } from "react";
+import { ReactNode, lazy, Suspense, useState } from "react";
+import Snowfall from "react-snowfall";
 import Navigation from "./Navigation";
 
 const PharaohAnimationBg = lazy(() => import("./PharaohAnimation"));
@@ -14,8 +15,26 @@ export default function Layout({
   currentPage,
   onNavigate,
 }: LayoutProps) {
+  const [snowEnabled, setSnowEnabled] = useState(true);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0e1a] via-[#1B2845] to-[#0a0e1a]">
+      {snowEnabled && (
+        <>
+          <Snowfall
+            snowflakeCount={80}
+            speed={[0.35, 1.1]}
+            radius={[0.8, 2.8]}
+            wind={[-0.3, 0.8]}
+            color="#edf8ff"
+            style={{ position: "fixed", inset: 0, zIndex: 20, pointerEvents: "none" }}
+          />
+          <div className="winter-background-phrase" aria-hidden="true">
+            Winter is coming
+          </div>
+        </>
+      )}
+
       {/* Global background animation */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <Suspense fallback={null}>
@@ -33,7 +52,12 @@ export default function Layout({
         />
       </div>
 
-      <Navigation currentPage={currentPage} onNavigate={onNavigate} />
+      <Navigation
+        currentPage={currentPage}
+        onNavigate={onNavigate}
+        snowEnabled={snowEnabled}
+        onSnowToggle={() => setSnowEnabled((enabled) => !enabled)}
+      />
 
       <main key={currentPage} className="page-enter relative z-10 pt-14 sm:pt-16">{children}</main>
 
